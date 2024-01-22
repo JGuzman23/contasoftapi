@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "r4OIVDJaoYRgVFtxZAlsEktFfkG4Sj4KaNFu0RwZYcU=",
+  "Source": "contasoft-api",
+  "BasePath": "_content/contasoft-api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
