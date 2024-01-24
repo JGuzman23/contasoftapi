@@ -277,3 +277,8 @@ C:\proyect\SoftwareContable\contasoft-api\contasoft-api\bin\Debug\net6.0\runtime
 C:\proyect\SoftwareContable\contasoft-api\contasoft-api\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 C:\proyect\SoftwareContable\contasoft-api\contasoft-api\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\proyect\SoftwareContable\contasoft-api\contasoft-api\bin\Debug\net6.0\Microsoft.IdentityModel.Abstractions.dll
+C:\proyect\SoftwareContable\contasoft-api\contasoft-api\bin\Debug\net6.0\AWSSDK.Core.dll
+C:\proyect\SoftwareContable\contasoft-api\contasoft-api\bin\Debug\net6.0\AWSSDK.SimpleSystemsManagement.dll
+C:\proyect\SoftwareContable\contasoft-api\contasoft-api\bin\Debug\net6.0\DocumentFormat.OpenXml.dll
+C:\proyect\SoftwareContable\contasoft-api\contasoft-api\bin\Debug\net6.0\SpreadsheetLight.dll
+C:\proyect\SoftwareContable\contasoft-api\contasoft-api\bin\Debug\net6.0\System.IO.Packaging.dll

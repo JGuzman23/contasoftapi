@@ -244,10 +244,10 @@ namespace contasoft_api.Migrations
                     b.Property<int>("O606Id")
                         .HasColumnType("int");
 
-                    b.Property<string>("OtrosImpuestosTasa")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<decimal?>("OtrosImpuestosTasa")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("RNCCédulaPasaporte")
+                    b.Property<string>("RNCCedulaPasaporte")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TipoBienesYServiciosComprados")
@@ -400,6 +400,9 @@ namespace contasoft_api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("RNC")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2");
 
@@ -439,6 +442,9 @@ namespace contasoft_api.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RNC")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdateDate")

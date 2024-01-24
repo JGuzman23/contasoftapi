@@ -2,6 +2,51 @@
   "version": 3,
   "targets": {
     "net6.0": {
+      "AWSSDK.Core/3.7.301.9": {
+        "type": "package",
+        "compile": {
+          "lib/netcoreapp3.1/AWSSDK.Core.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/AWSSDK.Core.dll": {
+            "related": ".pdb;.xml"
+          }
+        }
+      },
+      "AWSSDK.SimpleSystemsManagement/3.7.301.35": {
+        "type": "package",
+        "dependencies": {
+          "AWSSDK.Core": "[3.7.301.9, 4.0.0)"
+        },
+        "compile": {
+          "lib/netcoreapp3.1/AWSSDK.SimpleSystemsManagement.dll": {
+            "related": ".pdb;.xml"
+          }
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/AWSSDK.SimpleSystemsManagement.dll": {
+            "related": ".pdb;.xml"
+          }
+        }
+      },
+      "DocumentFormat.OpenXml/2.11.3": {
+        "type": "package",
+        "dependencies": {
+          "System.IO.Packaging": "4.7.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/DocumentFormat.OpenXml.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/DocumentFormat.OpenXml.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "Humanizer/2.14.1": {
         "type": "package",
         "dependencies": {
@@ -2339,6 +2384,23 @@
           }
         }
       },
+      "SpreadsheetLight/3.5.0": {
+        "type": "package",
+        "dependencies": {
+          "DocumentFormat.OpenXml": "2.11.3",
+          "System.Drawing.Common": "5.0.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/SpreadsheetLight.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/SpreadsheetLight.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "SQLitePCLRaw.bundle_e_sqlite3/2.1.2": {
         "type": "package",
         "dependencies": {
@@ -3040,6 +3102,19 @@
         },
         "runtime": {
           "lib/netstandard1.3/System.IO.FileSystem.Primitives.dll": {}
+        }
+      },
+      "System.IO.Packaging/4.7.0": {
+        "type": "package",
+        "compile": {
+          "ref/netstandard2.0/System.IO.Packaging.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.IO.Packaging.dll": {
+            "related": ".xml"
+          }
         }
       },
       "System.IO.Pipelines/5.0.1": {
@@ -4063,6 +4138,89 @@
     }
   },
   "libraries": {
+    "AWSSDK.Core/3.7.301.9": {
+      "sha512": "7Vu9dQSSxaO6l37GyDMS9Jx/GFaqPn3sJfP8j/o9/E6IF+7UfWv1BYAvxNS93J0mnYW/LqnBVJWQH3P7eWtPgw==",
+      "type": "package",
+      "path": "awssdk.core/3.7.301.9",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "awssdk.core.3.7.301.9.nupkg.sha512",
+        "awssdk.core.nuspec",
+        "images/AWSLogo.png",
+        "lib/net35/AWSSDK.Core.dll",
+        "lib/net35/AWSSDK.Core.pdb",
+        "lib/net35/AWSSDK.Core.xml",
+        "lib/net45/AWSSDK.Core.dll",
+        "lib/net45/AWSSDK.Core.pdb",
+        "lib/net45/AWSSDK.Core.xml",
+        "lib/net8.0/AWSSDK.Core.dll",
+        "lib/net8.0/AWSSDK.Core.pdb",
+        "lib/net8.0/AWSSDK.Core.xml",
+        "lib/netcoreapp3.1/AWSSDK.Core.dll",
+        "lib/netcoreapp3.1/AWSSDK.Core.pdb",
+        "lib/netcoreapp3.1/AWSSDK.Core.xml",
+        "lib/netstandard2.0/AWSSDK.Core.dll",
+        "lib/netstandard2.0/AWSSDK.Core.pdb",
+        "lib/netstandard2.0/AWSSDK.Core.xml",
+        "tools/account-management.ps1"
+      ]
+    },
+    "AWSSDK.SimpleSystemsManagement/3.7.301.35": {
+      "sha512": "le/w7iIBoRxpyrxDuP5JvDYwwNVAAA64VynKAld+D4R/hYPg0OeIRKV6jH03wwA4VvLuzW0Dp9+qgsMhi1HMkA==",
+      "type": "package",
+      "path": "awssdk.simplesystemsmanagement/3.7.301.35",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "analyzers/dotnet/cs/AWSSDK.SimpleSystemsManagement.CodeAnalysis.dll",
+        "analyzers/dotnet/cs/SharedAnalysisCode.dll",
+        "awssdk.simplesystemsmanagement.3.7.301.35.nupkg.sha512",
+        "awssdk.simplesystemsmanagement.nuspec",
+        "images/AWSLogo.png",
+        "lib/net35/AWSSDK.SimpleSystemsManagement.dll",
+        "lib/net35/AWSSDK.SimpleSystemsManagement.pdb",
+        "lib/net35/AWSSDK.SimpleSystemsManagement.xml",
+        "lib/net45/AWSSDK.SimpleSystemsManagement.dll",
+        "lib/net45/AWSSDK.SimpleSystemsManagement.pdb",
+        "lib/net45/AWSSDK.SimpleSystemsManagement.xml",
+        "lib/net8.0/AWSSDK.SimpleSystemsManagement.dll",
+        "lib/net8.0/AWSSDK.SimpleSystemsManagement.pdb",
+        "lib/net8.0/AWSSDK.SimpleSystemsManagement.xml",
+        "lib/netcoreapp3.1/AWSSDK.SimpleSystemsManagement.dll",
+        "lib/netcoreapp3.1/AWSSDK.SimpleSystemsManagement.pdb",
+        "lib/netcoreapp3.1/AWSSDK.SimpleSystemsManagement.xml",
+        "lib/netstandard2.0/AWSSDK.SimpleSystemsManagement.dll",
+        "lib/netstandard2.0/AWSSDK.SimpleSystemsManagement.pdb",
+        "lib/netstandard2.0/AWSSDK.SimpleSystemsManagement.xml",
+        "tools/install.ps1",
+        "tools/uninstall.ps1"
+      ]
+    },
+    "DocumentFormat.OpenXml/2.11.3": {
+      "sha512": "dCugN386ka+LwcOHnxi4gUHbiDeIw0/GEYw1sXFhYiErGFbJpRpscRcn5b12dywUReFCOgGNJ/l16zG5udkC/A==",
+      "type": "package",
+      "path": "documentformat.openxml/2.11.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "documentformat.openxml.2.11.3.nupkg.sha512",
+        "documentformat.openxml.nuspec",
+        "icon.png",
+        "lib/net35/DocumentFormat.OpenXml.dll",
+        "lib/net35/DocumentFormat.OpenXml.xml",
+        "lib/net40/DocumentFormat.OpenXml.dll",
+        "lib/net40/DocumentFormat.OpenXml.xml",
+        "lib/net46/DocumentFormat.OpenXml.dll",
+        "lib/net46/DocumentFormat.OpenXml.xml",
+        "lib/netstandard1.3/DocumentFormat.OpenXml.dll",
+        "lib/netstandard1.3/DocumentFormat.OpenXml.xml",
+        "lib/netstandard2.0/DocumentFormat.OpenXml.dll",
+        "lib/netstandard2.0/DocumentFormat.OpenXml.xml"
+      ]
+    },
     "Humanizer/2.14.1": {
       "sha512": "/FUTD3cEceAAmJSCPN9+J+VhGwmL/C12jvwlyM1DFXShEMsBzvLzLqSrJ2rb+k/W2znKw7JyflZgZpyE+tI7lA==",
       "type": "package",
@@ -7667,6 +7825,20 @@
         "runtimes/ubuntu.16.10-x64/native/System.Security.Cryptography.Native.OpenSsl.so"
       ]
     },
+    "SpreadsheetLight/3.5.0": {
+      "sha512": "Yo262RbayDSUqQOKSjDxo61MTnCcEZ1i7NZvQeytIcggRwrrze6B7UMpJq+LR6vgJM9zwu3M39oXFQlJWpPY1A==",
+      "type": "package",
+      "path": "spreadsheetlight/3.5.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard2.0/SpreadsheetLight.dll",
+        "lib/netstandard2.0/SpreadsheetLight.xml",
+        "license.txt",
+        "spreadsheetlight.3.5.0.nupkg.sha512",
+        "spreadsheetlight.nuspec"
+      ]
+    },
     "SQLitePCLRaw.bundle_e_sqlite3/2.1.2": {
       "sha512": "ilkvNhrTersLmIVAcDwwPqfhUFCg19Z1GVMvCSi3xk6Akq94f4qadLORQCq/T8+9JgMiPs+F/NECw5uauviaNw==",
       "type": "package",
@@ -8977,6 +9149,33 @@
         "ref/xamarinwatchos10/_._",
         "system.io.filesystem.primitives.4.3.0.nupkg.sha512",
         "system.io.filesystem.primitives.nuspec"
+      ]
+    },
+    "System.IO.Packaging/4.7.0": {
+      "sha512": "9VV4KAbgRQZ79iEoG40KIeZy38O30oWwewScAST879+oki8g/Wa2HXZQgrhDDxQM4GkP1PnRJll05NMiVPbYAw==",
+      "type": "package",
+      "path": "system.io.packaging/4.7.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/net46/System.IO.Packaging.dll",
+        "lib/net46/System.IO.Packaging.xml",
+        "lib/netstandard1.3/System.IO.Packaging.dll",
+        "lib/netstandard1.3/System.IO.Packaging.xml",
+        "lib/netstandard2.0/System.IO.Packaging.dll",
+        "lib/netstandard2.0/System.IO.Packaging.xml",
+        "ref/net46/System.IO.Packaging.dll",
+        "ref/net46/System.IO.Packaging.xml",
+        "ref/netstandard1.3/System.IO.Packaging.dll",
+        "ref/netstandard1.3/System.IO.Packaging.xml",
+        "ref/netstandard2.0/System.IO.Packaging.dll",
+        "ref/netstandard2.0/System.IO.Packaging.xml",
+        "system.io.packaging.4.7.0.nupkg.sha512",
+        "system.io.packaging.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
       ]
     },
     "System.IO.Pipelines/5.0.1": {
@@ -11671,6 +11870,7 @@
   },
   "projectFileDependencyGroups": {
     "net6.0": [
+      "AWSSDK.SimpleSystemsManagement >= 3.7.301.35",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 6.0.26",
       "Microsoft.EntityFrameworkCore >= 6.0.25",
       "Microsoft.EntityFrameworkCore.SqlServer >= 6.0.25",
@@ -11678,6 +11878,7 @@
       "Microsoft.EntityFrameworkCore.Tools >= 6.0.25",
       "Microsoft.VisualStudio.Azure.Containers.Tools.Targets >= 1.19.4",
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 6.0.16",
+      "SpreadsheetLight >= 3.5.0",
       "Swashbuckle.AspNetCore >= 6.5.0",
       "System.IdentityModel.Tokens.Jwt >= 6.35.0"
     ]
@@ -11721,6 +11922,10 @@
       "net6.0": {
         "targetAlias": "net6.0",
         "dependencies": {
+          "AWSSDK.SimpleSystemsManagement": {
+            "target": "Package",
+            "version": "[3.7.301.35, )"
+          },
           "Microsoft.AspNetCore.Authentication.JwtBearer": {
             "target": "Package",
             "version": "[6.0.26, )"
@@ -11750,6 +11955,10 @@
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
             "target": "Package",
             "version": "[6.0.16, )"
+          },
+          "SpreadsheetLight": {
+            "target": "Package",
+            "version": "[3.5.0, )"
           },
           "Swashbuckle.AspNetCore": {
             "target": "Package",
