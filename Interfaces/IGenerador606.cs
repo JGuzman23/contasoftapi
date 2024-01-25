@@ -4,6 +4,7 @@ namespace contasoft_api.Interfaces
 {
     public interface IGenerador606
     {
-        MemoryStream Generate606xlsx(List<Invoice606>? dataList, O606 data);
+        byte[] Generate606xlsx(List<Invoice606>? dataList, O606 data);
+        string Generador606txt(List<Invoice606> dataList, O606 data);
     }
 }

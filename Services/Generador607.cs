@@ -145,7 +145,7 @@
 
 
                 var RNC = data.RNC;
-                var periodoValue = data.YearMonth;
+                var periodoValue = data.YearMonth.Replace("/","");
                 var cantidadValue = data.Amount;
                 char[] references = "ABCDEFGHIJKLMNOPQRSTUVWXY".ToCharArray();
 

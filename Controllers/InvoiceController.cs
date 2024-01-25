@@ -6,6 +6,7 @@ using contasoft_api.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using NuGet.Packaging;
 using System.ComponentModel.Design;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
@@ -195,8 +196,9 @@ namespace contasoft_api.Controllers
                     Operacion606 = new O606();
                     Operacion606.YearMonth = anomesActual;
                     Operacion606.Amount = 1;
+                    Operacion606.RNC = company.RNC;
                     Operacion606.CompanyId = (int)input.CompanyID;
-                    Operacion606.Name = $@"607-{company.Name}-{Operacion606.YearMonth}";
+                    Operacion606.Name = $@"607-{company.Name}-{Operacion606.YearMonth.Replace("/","")}";
                     Operacion606.CreateDate = DateTime.Now;
                     Operacion606.UserCode = "root";
                     Operacion606.IsActive = false;
@@ -240,7 +242,7 @@ namespace contasoft_api.Controllers
 
                 await _context.Invoice606.AddAsync(Invoice);
                 await _context.SaveChangesAsync();
-                response.Data = "Agregado Corrrectamente";
+                response.Data = "Factura registrada con éxito";
                 response.Message = "Success";
                 response.StatusCode = 1;
                 response.Success = true;
@@ -298,16 +300,16 @@ namespace contasoft_api.Controllers
             try
             {
                 var Operacion606 = await _context.O606.Where(x => x.CompanyId == data.CompanyID && x.YearMonth== data.Anomes).FirstOrDefaultAsync();
-                var CountInvoice = await _context.Invoice606.Where(x=>x.O606Id == Operacion606.Id && x.IsActive).CountAsync();
                 var company = await _context.Company.FindAsync(data.CompanyID);
 
                 if (Operacion606 == null)
                 {
                     Operacion606 = new O606();
+                    Operacion606.RNC = data.RNC;
                     Operacion606.YearMonth = data.Anomes;
-                    Operacion606.Amount = CountInvoice;
+                    Operacion606.Amount = 0;
                     Operacion606.CompanyId = data.CompanyID;
-                    Operacion606.Name = $@"606-{company.Name}-{Operacion606.YearMonth}";
+                    Operacion606.Name = $@"606-{company.Name}-{Operacion606.YearMonth.Replace("/", "")}";
                     Operacion606.CreateDate = DateTime.Now;
                     Operacion606.UserCode = "root";
                     Operacion606.IsActive = true;
@@ -317,6 +319,8 @@ namespace contasoft_api.Controllers
                 }
                 else
                 {
+                    var CountInvoice = await _context.Invoice606.Where(x => x.O606Id == Operacion606.Id && x.IsActive).CountAsync();
+
                     Operacion606.Amount = CountInvoice;
                     Operacion606.IsActive = true;
                      _context.O606.Update(Operacion606);
@@ -325,7 +329,7 @@ namespace contasoft_api.Controllers
 
 
                // response.Data = Operacion606;
-                response.Message = "Success";
+                response.Message = "606 creado con éxito!";
                 response.StatusCode = 1;
                 response.Success = true;
             }
@@ -358,13 +362,92 @@ namespace contasoft_api.Controllers
                 if (Operacion606 != null)
                 {
                     var invoices = await _context.Invoice606.Where(x => x.O606Id == model.O606Id && x.IsActive).ToListAsync();
+                    if (invoices ==null)
+                    {
+                        invoices = new List<Invoice606> { };
+                    }
                     if (model.Formato == 23)
                     {
+                        try
+                        {
+                           var document=  _generador606.Generate606xlsx(invoices, Operacion606);
+                            response.Data= File(document, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", Operacion606.Name +".xlsx");
 
-                        var documento = _generador606.Generate606xlsx(invoices, Operacion606);
-                        response.Data = File(documento, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", $"{Operacion606.Name}.xlsx");
+
+                        }
+                        catch (Exception r)
+                        {
+
+                            throw;
+                        }
+                      
                     }
                     else if(model.Formato == 19)
+                    {
+
+                        string archivo = _generador606.Generador606txt(invoices, Operacion606);
+                        response.Data = archivo;
+                    }
+
+                }
+                else
+                {
+                   
+                }
+
+
+                // response.Data = Operacion606;
+                response.Message = "606 descargado con éxito!";
+                response.StatusCode = 1;
+                response.Success = true;
+            }
+            catch (Exception ex)
+            {
+                response.Message = "Error descargar el 606.";
+                response.StatusCode = 0;
+                response.Success = false;
+
+            }
+            return Ok(response);
+        }
+
+        [HttpPost("descargar/607")]
+        public async Task<IActionResult> Descargar607xlsx(Descargar606Input model)
+        {
+            var response = new DefaultResponse();
+            var ListaDeFacturas = new List<Invoice606>();
+            if (_context.O606 == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                var Operacion606 = await _context.O607.Where(x => x.Id == model.O606Id && x.IsActive).FirstOrDefaultAsync();
+
+
+                if (Operacion606 != null)
+                {
+                    var invoices = await _context.Invoice607.Where(x => x.O607Id == model.O606Id && x.IsActive).ToListAsync();
+                    if (invoices == null)
+                    {
+                        invoices = new List<Invoice607> { };
+                    }
+                    if (model.Formato == 23)
+                    {
+                        try
+                        {
+                            _generador607.Generate607xlsx(invoices, Operacion606);
+
+                        }
+                        catch (Exception r)
+                        {
+
+                            throw;
+                        }
+
+                    }
+                    else if (model.Formato == 19)
                     {
                         //descargar txt
                     }
@@ -372,7 +455,7 @@ namespace contasoft_api.Controllers
                 }
                 else
                 {
-                   
+
                 }
 
 
@@ -400,5 +483,6 @@ namespace contasoft_api.Controllers
     {
         public int CompanyID { get; set; }
         public string Anomes { get; set; }
+        public string RNC { get; set; }
     }
 }
