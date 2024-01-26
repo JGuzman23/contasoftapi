@@ -6,6 +6,14 @@ WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
+
+ENV System.Drawing.EnableUnixSupport=true
+
+RUN apt-get update && \
+    apt-get install -y --allow-unauthenticated libgdiplus libc6-dev
+
+
+
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["contasoft-api.csproj", "."]
@@ -20,4 +28,7 @@ RUN dotnet publish "contasoft-api.csproj" -c Release -o /app/publish /p:UseAppHo
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+
+
+ENV imagendgii="/opt/contasoft/images/dgii.png"
 ENTRYPOINT ["dotnet", "contasoft-api.dll"]

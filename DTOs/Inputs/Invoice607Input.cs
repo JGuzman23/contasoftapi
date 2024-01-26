@@ -3,7 +3,7 @@
     public class Invoice607Input
     {
         public int Id { get; set; }
-        public string? RNCCédulaPasaporte { get; set; }
+        public string? RNCCedulaPasaporte { get; set; }
         public string? TipoIdentificación { get; set; }
         public string? NumeroComprobanteFiscal { get; set; }
         public string? NumeroComprobanteFiscalModificado { get; set; }

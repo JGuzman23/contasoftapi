@@ -15,9 +15,8 @@ namespace contasoft_api.Services
             //var result = new Result { };
             string msg = default;
             var stream = new MemoryStream();
-            // string devPath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../../ServicioEmisionArchivo607DGII/Images/"));
-            //string prodPath = Environment.GetEnvironmentVariable("MMC_AVANEX_ARCHIVO_607_BASE_PATH");
-            string basePath = @"Images/dgii.png";
+          
+            string basePath = Environment.GetEnvironmentVariable("imagendgii");
 
 
 
@@ -42,10 +41,13 @@ namespace contasoft_api.Services
                 sl.RenameWorksheet(SLDocument.DefaultFirstSheetName, "Herramienta Formato 607");
                 //ADDING PIC
 
-                byte[] byteList = File.ReadAllBytes(basePath);
-                pic = new SLPicture(byteList, DocumentFormat.OpenXml.Packaging.ImagePartType.Png, false);
-                pic.SetPosition(0, 0);
-                sl.InsertPicture(pic);
+                if (Directory.Exists(basePath))
+                {
+                    byte[] byteList = File.ReadAllBytes(basePath);
+                    pic = new SLPicture(byteList, DocumentFormat.OpenXml.Packaging.ImagePartType.Png, false);
+                    pic.SetPosition(0, 0);
+                    sl.InsertPicture(pic);
+                }
 
                 #region Setting SLStyle
                 //COLORS

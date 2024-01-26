@@ -13,16 +13,15 @@
     {
 
 
-        public void Generate607xlsx(List<Invoice607>? dataList, O607 data)
+        public byte[] Generate607xlsx(List<Invoice607>? dataList, O607 data)
         {
             #region Definitions
             //var result = new Result { };
             string msg = default;
             // string devPath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../../ServicioEmisionArchivo607DGII/Images/"));
             //string prodPath = Environment.GetEnvironmentVariable("MMC_AVANEX_ARCHIVO_607_BASE_PATH");
-            string basePath = @"C:\Users\kelvi\OneDrive\Escritorio\Images\Picture.png";
-            string fileSavePath = @"C:\Users\kelvi\OneDrive\Escritorio";
-
+            string basePath = Environment.GetEnvironmentVariable("imagendgii");
+            var stream = new MemoryStream();
 
             SLDocument sl = new SLDocument();
             SLPicture pic = default;
@@ -45,10 +44,15 @@
                 sl.RenameWorksheet(SLDocument.DefaultFirstSheetName, "Herramienta Formato 607");
                 //ADDING PIC
 
-                byte[] byteList = File.ReadAllBytes(basePath);
-                pic = new SLPicture(byteList, DocumentFormat.OpenXml.Packaging.ImagePartType.Png, false);
-                pic.SetPosition(0, 0);
-                sl.InsertPicture(pic);
+                if (Directory.Exists(basePath))
+                {
+                    byte[] byteList = File.ReadAllBytes(basePath);
+                    pic = new SLPicture(byteList, DocumentFormat.OpenXml.Packaging.ImagePartType.Png, false);
+                    pic.SetPosition(0, 0);
+                    sl.InsertPicture(pic);
+                }
+
+              
 
                 #region Setting SLStyle
                 //COLORS
@@ -560,8 +564,8 @@
 
                 #endregion
 
-                string ruta = @$"{fileSavePath}/{data.Name}.xlsx";
-                sl.SaveAs(ruta);
+                
+                sl.SaveAs(stream);
 
 
 
@@ -570,12 +574,58 @@
             }
             catch (Exception e)
             {
-
+                return stream.ToArray();
             }
-
+            return stream.ToArray();
 
         }
 
+        public string Generador607txt(List<Invoice607> dataList, O607 data)
+        {
+
+            var archivo = $"606|{data.RNC}|{data.YearMonth.Replace("/", "")}|{data.Amount} \n";
+            foreach (var item in dataList)
+            {
+
+                var fechaComprobante = DateTime.Parse(item.FechaComprobante);
+                var fecharetencion = "";
+                if (item.FechaRetención != "")
+                {
+                    var fechaPagoParse = DateTime.Parse(item.FechaRetención);
+                    fecharetencion = $"{fechaPagoParse.Year}{fechaPagoParse.Month}{fechaPagoParse.Day}";
+                }
+
+              
+
+                archivo += $"{item.RNCCédulaPasaporte.Replace("-", "")}|" +
+                    $"{item.TipoIdentificación}|" +
+                    $"{item.NumeroComprobanteFiscal}|" +
+                    $"{item.NumeroComprobanteFiscalModificado}" +
+                    $"|{item.TipoIngreso}" +
+                    $"|{fechaComprobante.Year}{fechaComprobante.Month}{fechaComprobante.Day}" +
+                    $"|{fecharetencion}" +
+
+                    $"|{item.MontoFacturado}" +
+                    $"|{item.ITBISFacturado}" +
+                    $"|{item.ITBISRetenidoporTerceros}" +
+                    $"|{item.ITBISPercibido}" +
+                    $"|{item.RetenciónRentaporTerceros}" +
+                    $"|{item.ISRPercibido}" +
+                    $"|{item.ImpuestoSelectivoalConsumo}" +
+                    $"|{item.OtrosImpuestos_Tasas}" +
+                    $"|{item.MontoPropinaLegal}" +
+                    $"|{item.Efectivo}" +
+                    $"|{item.Cheque_Transferencia_Depósito}" +
+                    $"|{item.TarjetaDébito_Crédito}" +
+                    $"|{item.VentaACrédito}" +
+                    $"|{item.BonosOCertificadosRegalo}" +
+                    $"|{item.Permuta}" +
+                    $"|{item.OtrasFormasVentas} \n";
+            }
+
+            return archivo;
+
+        }
 
         public static string GetFechaComprobante(string anoMes)
         {
