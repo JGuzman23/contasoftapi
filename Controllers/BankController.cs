@@ -127,9 +127,10 @@ namespace contasoft_api.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutBank(int id, BankInput bank)
         {
+            var response = new DefaultResponse();
 
 
-            if (id != bank.Id)
+            if (id != bank.BankSelectedID)
             {
                 return BadRequest();
             }
@@ -138,29 +139,41 @@ namespace contasoft_api.Controllers
                 Id = bank.BankSelectedID,
                 BankId = bank.Id,
                 AccountNumber = bank.AccountNumber,
-                CompanyId = bank.CompanyId
+                CompanyId = bank.CompanyId,
+                UpdateDate = DateTime.Now,
+                UserCode = "root",
+                IsActive = true
 
             };
 
-            _context.Entry(bankSelected).State = EntityState.Modified;
+           
 
             try
             {
+                // _context.Entry(bankSelected).State = EntityState.Modified;
+                _context.BankSelected.Update(bankSelected);
                 await _context.SaveChangesAsync();
+
+
+                response.Message = "Banco Actualizado con éxito. ";
+                response.StatusCode = 1;
+                response.Success = true;
+                
+
+
+
+                return Ok(response);
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception e)
             {
-                if (!BankExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                response.Message = e.Message;
+                response.StatusCode = 0;
+                response.Success = false;
+                return BadRequest(response);
+
             }
 
-            return NoContent();
+            
         }
 
         // POST: api/Bank
@@ -189,7 +202,7 @@ namespace contasoft_api.Controllers
             _context.BankSelected.Add(bankSelected);
             await _context.SaveChangesAsync();
 
-            response.Message = "Success";
+            response.Message = "Creado con Éxito.";
             response.StatusCode = 1;
             response.Success = true;
            
@@ -201,6 +214,8 @@ namespace contasoft_api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBank(int id)
         {
+            var response = new DefaultResponse();
+
             if (_context.BankSelected == null)
             {
                 return NotFound();
@@ -210,11 +225,28 @@ namespace contasoft_api.Controllers
             {
                 return NotFound();
             }
+            try
+            {
 
-            _context.BankSelected.Remove(bankSelected);
-            await _context.SaveChangesAsync();
+                _context.BankSelected.Remove(bankSelected);
+                await _context.SaveChangesAsync();
 
-            return NoContent();
+
+                response.Message = "Banco eliminado con éxito. ";
+                response.StatusCode = 1;
+                response.Success = true;
+                return Ok(response);
+            }
+            catch (Exception)
+            {
+
+                response.Message = "Error al eliminar ";
+                response.StatusCode = 0;
+                response.Success = false;
+                return BadRequest(response);
+            }
+
+
         }
 
         private bool BankExists(int id)

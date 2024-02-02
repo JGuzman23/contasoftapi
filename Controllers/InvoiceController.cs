@@ -280,18 +280,18 @@ namespace contasoft_api.Controllers
                 }
                 else
                 {
-                    response.Message = $"606 no encontrado id:{model.O607Id},formato:{model.Formato} ";
+                    response.Message = $"607 no encontrado id:{model.O607Id},formato:{model.Formato} ";
                 }
 
 
                 // response.Data = Operacion606;
-                response.Message = "606 descargado con éxito!";
+                response.Message = "607 descargado con éxito!";
                 response.StatusCode = 1;
                 response.Success = true;
             }
             catch (Exception ex)
             {
-                response.Message = $"Error descargar el 606. {ex.Message}";
+                response.Message = $"Error descargar el 607. {ex.Message}";
                 response.StatusCode = 0;
                 response.Success = false;
 
