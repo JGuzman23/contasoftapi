@@ -20,7 +20,6 @@
         public decimal? ITBISLlevadoAlCosto { get; set; }
         public decimal? ITBISPorAdelantar { get; set; }
         public decimal? ITBISPersividoEnCompras { get; set; }
-       
         public decimal? MontoRetencionRenta { get; set; }
         public decimal? IRSPercibidoEnCompras { get; set; }
         public decimal? ImpuestoSelectivoAlConsumo  { get; set; }
@@ -28,6 +27,7 @@
         public decimal? MontoPropinaLegal { get; set; }
         public int? FormaDePago { get; set; }
         public int O606Id { get; set; }
+        public bool Deleted { get; set; }
 
         public virtual O606 O606 { get; set; }
 

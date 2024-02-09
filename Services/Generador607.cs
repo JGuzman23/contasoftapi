@@ -150,7 +150,7 @@
 
                 var RNC = data.RNC;
                 var periodoValue = data.YearMonth.Replace("/","");
-                var cantidadValue = data.Amount;
+                var cantidadValue = dataList.Count();
                 char[] references = "ABCDEFGHIJKLMNOPQRSTUVWXY".ToCharArray();
 
 
@@ -210,13 +210,32 @@
                     var row = new Row { RowIndex = UInt32.Parse(rowNumber) };
                     //ADDING DATA
                     sl.SetCellValueNumeric("A" + rowNumber, (i + 1).ToString());
-                    sl.SetCellValue("B" + rowNumber, FormatingData(dataList[i].RNCCédulaPasaporte));
-                    sl.SetCellValueNumeric("C" + rowNumber, dataList[i].TipoIdentificación);
-                    sl.SetCellValue("D" + rowNumber, dataList[i].NumeroComprobanteFiscal);
-                    sl.SetCellValue("F" + rowNumber, dataList[i].TipoIngreso);
+                    sl.SetCellValue("B" + rowNumber, FormatingData(dataList[i].RNCCedulaPasaporte));
+                    sl.SetCellValueNumeric("C" + rowNumber, dataList[i].TipoIdentificación.ToString());
+                    sl.SetCellValue("D" + rowNumber, dataList[i].NumeroComprobanteFiscal).ToString();
+                    sl.SetCellValue("E" + rowNumber, dataList[i].NumeroComprobanteFiscalModificado).ToString();
+                    sl.SetCellValue("F" + rowNumber, dataList[i].TipoIngreso.ToString());
                     sl.SetCellValueNumeric("G" + rowNumber, dataList[i].FechaComprobante);
-                    sl.SetCellValueNumeric("I" + rowNumber, dataList[i].MontoFacturado);
-                    sl.SetCellValueNumeric("U" + rowNumber, dataList[i].VentaACrédito);
+                    sl.SetCellValueNumeric("H" + rowNumber, dataList[i].FechaRetención);
+
+                    sl.SetCellValueNumeric("I" + rowNumber, dataList[i].MontoFacturado.ToString());
+                    sl.SetCellValueNumeric("J" + rowNumber, dataList[i].ITBISFacturado.ToString());
+                    sl.SetCellValueNumeric("K" + rowNumber, dataList[i].ITBISRetenidoporTerceros.ToString());
+                    sl.SetCellValueNumeric("L" + rowNumber, dataList[i].ITBISPercibido.ToString());
+                    sl.SetCellValueNumeric("M" + rowNumber, dataList[i].RetenciónRentaporTerceros.ToString());
+                    sl.SetCellValueNumeric("N" + rowNumber, dataList[i].ISRPercibido.ToString());
+                    sl.SetCellValueNumeric("O" + rowNumber, dataList[i].ImpuestoSelectivoalConsumo.ToString());
+                    sl.SetCellValueNumeric("P" + rowNumber, dataList[i].OtrosImpuestos_Tasas.ToString());
+                    sl.SetCellValueNumeric("Q" + rowNumber, dataList[i].MontoPropinaLegal.ToString());
+                    sl.SetCellValueNumeric("R" + rowNumber, dataList[i].Efectivo.ToString());
+                    sl.SetCellValueNumeric("S" + rowNumber, dataList[i].Cheque_Transferencia_Depósito.ToString());
+                    sl.SetCellValueNumeric("T" + rowNumber, dataList[i].TarjetaDébito_Crédito.ToString());
+                    sl.SetCellValueNumeric("U" + rowNumber, dataList[i].VentaACrédito.ToString());
+                    sl.SetCellValueNumeric("V" + rowNumber, dataList[i].BonosOCertificadosRegalo.ToString());
+                    sl.SetCellValueNumeric("W" + rowNumber, dataList[i].Permuta.ToString());
+                    sl.SetCellValueNumeric("X" + rowNumber, dataList[i].OtrasFormasVentas.ToString());
+
+
 
                     //SETTING CELL STYLE
                     sl.SetCellStyle("A" + rowNumber, styleColumnNo);
@@ -583,7 +602,7 @@
         public string Generador607txt(List<Invoice607> dataList, O607 data)
         {
 
-            var archivo = $"606|{data.RNC}|{data.YearMonth.Replace("/", "")}|{data.Amount} \n";
+            var archivo = $"606|{data.RNC}|{data.YearMonth.Replace("/", "")}|{dataList.Count()} \n";
             foreach (var item in dataList)
             {
 
@@ -597,7 +616,7 @@
 
               
 
-                archivo += $"{item.RNCCédulaPasaporte.Replace("-", "")}|" +
+                archivo += $"{item.RNCCedulaPasaporte.Replace("-", "")}|" +
                     $"{item.TipoIdentificación}|" +
                     $"{item.NumeroComprobanteFiscal}|" +
                     $"{item.NumeroComprobanteFiscalModificado}" +

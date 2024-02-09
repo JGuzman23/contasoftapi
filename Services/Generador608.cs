@@ -4,12 +4,13 @@ using SpreadsheetLight.Drawing;
 using SpreadsheetLight;
 using contasoft_api.Interfaces;
 using System.Reflection;
+using contasoft_api.Controllers;
 
 namespace contasoft_api.Services
 {
-    public class Generador606 : IGenerador606
+    public class Generador608 : IGenerador608
     {
-        public byte[] Generate606xlsx(List<Invoice606> dataList, O606 data)
+        public byte[] Generate608xlsx(List<DataList608> dataList, O608 data)
         {
             #region Definitions
             //var result = new Result { };
@@ -146,12 +147,12 @@ namespace contasoft_api.Services
                 var RNC = data.RNC;
                 var periodoValue = data.YearMonth.Replace("/", "");
                 var cantidadValue = dataList.Count();
-                char[] references = "ABCDEFGHIJKLMNOPQRSTUVWXY".ToCharArray();
+                char[] references = "ABCDEF".ToCharArray();
 
 
                 #region Adding Rows
                 sl.SetCellValue("B1", "Direccion General de Impuestos Internos");
-                sl.SetCellValue("B2", "Formato de Envio de Ventas de Bienes y Servicios");
+                sl.SetCellValue("B2", "Formato de Envio de Comprobantes Fiscales Anulados");
                 sl.SetCellValue("B3", "Version 2019.6.2");
                 sl.SetCellValue("B4", "RNC o Cédula");
                 sl.SetCellValue("B5", "Periodo");
@@ -162,11 +163,11 @@ namespace contasoft_api.Services
                 sl.SetCellValueNumeric("C5", periodoValue);
                 sl.SetCellValueNumeric("C6", cantidadValue.ToString());
 
-                sl.SetCellValue("F1", "Herramienta de Distribucion Gratuita");
-                sl.SetCellValue("F2", "Derechos Reservados DGII 2018");
+                sl.SetCellValue("E1", "Herramienta de Distribucion Gratuita");
+                sl.SetCellValue("E2", "Derechos Reservados DGII 2018");
 
-                sl.SetCellValue("G6", "Total Errores");
-                sl.SetCellValueNumeric("G7", "0");
+                sl.SetCellValue("E6", "Total Errores");
+                sl.SetCellValueNumeric("E7", "0");
 
                 //TiposIngresos
                 sl.SetCellValue("AA13", "01 - Ingresos por Operaciones(No Financieros)");
@@ -188,7 +189,7 @@ namespace contasoft_api.Services
 
                 //ROW 11
                 var row11 = new Row { RowIndex = 11 };
-                string[] headers11 = { "Líneas", "RNC o Cédula", "Tipo Id", "Tipo Bienes y Servicios Comprados", "NCF", "NCF ó Documento Modificado ", "Fecha Comprobante", "Fecha Pago", "Monto Facturado en Servicios", "Monto Facturado en Bienes", "Total Monto Facturado", "ITBIS Facturado", "ITBIS Retenido", "ITBIS sujeto a Proporcionalidad", "ITBIS llevado al Costo", "ITBIS por adelantar", "ITBIS percibido en compras", "Tipo de Retención en IRS", "Monto Retención Renta", "IRS Percibido en compras", "Impuesto Selectivo al Consumo", "Otros Impuestos/Tasas", "Monto Propina Legar", "Forma de Pago" };
+                string[] headers11 = { "Líneas", "Número de Comprobante Fiscal","Fecha de comprobante","Tipo de Anulacion" ,"Estatus",""};
 
                 for (int i = 0; i < references.Length - 1; i++)
                 {
@@ -213,62 +214,25 @@ namespace contasoft_api.Services
                     var row = new Row { RowIndex = UInt32.Parse(rowNumber) };
                     //ADDING DATA
                     sl.SetCellValueNumeric("A" + rowNumber, (i + 1).ToString());
-                    sl.SetCellValue("B" + rowNumber, dataList[i].RNCCedulaPasaporte.ToString().Replace("-", ""));
-                    sl.SetCellValueNumeric("C" + rowNumber, dataList[i].TipoID.ToString());
+                    sl.SetCellValue("B" + rowNumber, dataList[i].NCF.ToString().Replace("-", ""));
+                    sl.SetCellValueNumeric("C" + rowNumber, dataList[i].FechaComprobante.ToString());
 
-                    var tipobys = TipoBienesyServicios.Where(x=>x.Id == dataList[i].TipoBienesYServiciosComprados).FirstOrDefault();
+                    var tipobys = TipoAnulacion.Where(x=>x.Id == dataList[i].TipoAnulacionID).FirstOrDefault();
 
 
                     sl.SetCellValue("D" + rowNumber, tipobys.Valor.ToString());
-                    sl.SetCellValue("E" + rowNumber, dataList[i].NumeroComprobanteFiscal.ToString());
-                    sl.SetCellValueNumeric("F" + rowNumber, dataList[i].NumeroComprobanteFiscalModificado.ToString());
-                    sl.SetCellValueNumeric("g" + rowNumber, dataList[i].FechaComprobante.ToString());
-                    sl.SetCellValueNumeric("H" + rowNumber, dataList[i].FechaPago.ToString());
-                    sl.SetCellValueNumeric("I" + rowNumber, dataList[i].MontoFacturadoEnServicio.ToString());
-                    sl.SetCellValueNumeric("J" + rowNumber, dataList[i].MontoFacturadoEnBienes.ToString());
-                    sl.SetCellValueNumeric("K" + rowNumber, dataList[i].TotalMontoFacturado.ToString());
-                    sl.SetCellValueNumeric("L" + rowNumber, dataList[i].ITBISFacturado.ToString());
-                    sl.SetCellValueNumeric("M" + rowNumber, dataList[i].ITBISRetenido.ToString());
-                    sl.SetCellValueNumeric("N" + rowNumber, dataList[i].ITBISSujetoaProporcionalidad.ToString());
-                    sl.SetCellValueNumeric("O" + rowNumber, dataList[i].ITBISLlevadoAlCosto.ToString());
-                    sl.SetCellValueNumeric("P" + rowNumber, dataList[i].ITBISPorAdelantar.ToString());
-                    sl.SetCellValueNumeric("Q" + rowNumber, dataList[i].ITBISPersividoEnCompras.ToString());
-                    sl.SetCellValueNumeric("R" + rowNumber, dataList[i].TipoRetencionEnISR.ToString());
-                    sl.SetCellValueNumeric("S" + rowNumber, dataList[i].MontoRetencionRenta.ToString());
-                    sl.SetCellValueNumeric("T" + rowNumber, dataList[i].IRSPercibidoEnCompras.ToString());
-                    sl.SetCellValueNumeric("U" + rowNumber, dataList[i].ImpuestoSelectivoAlConsumo.ToString());
-                    sl.SetCellValueNumeric("V" + rowNumber, dataList[i].OtrosImpuestosTasa.ToString());
-                    sl.SetCellValueNumeric("W" + rowNumber, dataList[i].MontoPropinaLegal.ToString());
+                    sl.SetCellValue("E" + rowNumber, "Activo");
 
-                    var formapago = FormaPago.Where(x => x.Id == dataList[i].FormaDePago).FirstOrDefault();
 
-                    sl.SetCellValueNumeric("x" + rowNumber, formapago.Valor.ToString());
+
                     //SETTING CELL STYLE
                     sl.SetCellStyle("A" + rowNumber, styleColumnNo);
                     sl.SetCellStyle("B" + rowNumber, horizontAlignMenteLeft);
                     sl.SetCellStyle("C" + rowNumber, styleOutsideBorderCenter);
                     sl.SetCellStyle("D" + rowNumber, styleOutsideBorder);
                     sl.SetCellStyle("E" + rowNumber, styleOutsideBorder);
-                    sl.SetCellStyle("F" + rowNumber, styleOutsideBorder);
-                    sl.SetCellStyle("G" + rowNumber, styleOutsideBorder);
-                    sl.SetCellStyle("H" + rowNumber, styleOutsideBorder);
-                    sl.SetCellStyle("I" + rowNumber, styleOutsideBorder);
-                    sl.SetCellStyle("J" + rowNumber, styleOutsideBorder);
-                    sl.SetCellStyle("K" + rowNumber, styleOutsideBorder);
-                    sl.SetCellStyle("L" + rowNumber, styleOutsideBorder);
-                    sl.SetCellStyle("M" + rowNumber, styleOutsideBorder);
-                    sl.SetCellStyle("N" + rowNumber, styleOutsideBorder);
-                    sl.SetCellStyle("O" + rowNumber, styleOutsideBorder);
-                    sl.SetCellStyle("P" + rowNumber, styleOutsideBorder);
-                    sl.SetCellStyle("Q" + rowNumber, styleOutsideBorder);
-                    sl.SetCellStyle("R" + rowNumber, styleOutsideBorder);
-                    sl.SetCellStyle("S" + rowNumber, styleOutsideBorder);
-                    sl.SetCellStyle("T" + rowNumber, styleOutsideBorder);
-                    sl.SetCellStyle("U" + rowNumber, styleOutsideBorder);
-                    sl.SetCellStyle("V" + rowNumber, styleOutsideBorder);
-                    sl.SetCellStyle("W" + rowNumber, styleOutsideBorder);
-                    sl.SetCellStyle("X" + rowNumber, styleOutsideBorder);
-                    sl.SetCellStyle("Y" + rowNumber, styleColumnNo);
+
+
                 }
                 #endregion
 
@@ -548,12 +512,12 @@ namespace contasoft_api.Services
                 sl.SetCellStyle("F1", styleCenterMergeCell);
                 sl.SetCellStyle("F2", styleCenterMergeCell);
 
-                sl.SetCellStyle("G6", styleCellHeader);
-                sl.SetCellStyle("G7", styleG7);
+                sl.SetCellStyle("E6", styleCellHeader);
+                sl.SetCellStyle("E7", styleG7);
 
-                sl.MergeWorksheetCells("B9", "X9");
-                sl.MergeWorksheetCells("F1", "I1");
-                sl.MergeWorksheetCells("F2", "I2");
+                sl.MergeWorksheetCells("B9", "D9");
+                sl.MergeWorksheetCells("E1", "F1");
+                sl.MergeWorksheetCells("E2", "F2");
 
                 #endregion
 
@@ -629,98 +593,37 @@ namespace contasoft_api.Services
             public string Valor { get; set; }
         }
 
-        public List<TipoBienesyServiciosItem> TipoBienesyServicios { get; set; } = new List<TipoBienesyServiciosItem>
+        public List<TipoBienesyServiciosItem> TipoAnulacion { get; set; } = new List<TipoBienesyServiciosItem>
     {
              new TipoBienesyServiciosItem { Id = 0, Valor = "" },
-        new TipoBienesyServiciosItem { Id = 1, Valor = "01 Gastos de personal" },
-        new TipoBienesyServiciosItem { Id = 2, Valor = "02 Gastos por trabajo, suministro o servicios" },
-        new TipoBienesyServiciosItem { Id = 3, Valor = "03 Arrendamientos" },
-        new TipoBienesyServiciosItem { Id = 4, Valor = "04 Gastos activo fijo" },
-        new TipoBienesyServiciosItem { Id = 5, Valor = "05 Gastos de representación" },
-        new TipoBienesyServiciosItem { Id = 6, Valor = "06 Otras deducciones administrativas" },
-        new TipoBienesyServiciosItem { Id = 7, Valor = "07 Gastos financieros" },
-        new TipoBienesyServiciosItem { Id = 8, Valor = "08 Gastos extraordinarios" },
-        new TipoBienesyServiciosItem { Id = 9, Valor = "09 Compras y gastos que forman parte del costo de venta" },
-        new TipoBienesyServiciosItem { Id = 10, Valor = "10 Adquisiciones de activos" },
-        new TipoBienesyServiciosItem { Id = 11, Valor = "11 Gastos de seguros" }
+        new TipoBienesyServiciosItem { Id = 1, Valor = "01 Deterioro de Factura Pre-Impresa" },
+        new TipoBienesyServiciosItem { Id = 2, Valor = "02 Errores de Impresión (Factura Pre-Impresa)" },
+        new TipoBienesyServiciosItem { Id = 3, Valor = "03 Impresión Defectuosa" },
+        new TipoBienesyServiciosItem { Id = 4, Valor = "04 Corrección de la Información" },
+        new TipoBienesyServiciosItem { Id = 5, Valor = "05 Cambio de Productos" },
+        new TipoBienesyServiciosItem { Id = 6, Valor = "06 Devolución de Productos" },
+        new TipoBienesyServiciosItem { Id = 7, Valor = "07 Omisión de Productos" },
+        new TipoBienesyServiciosItem { Id = 8, Valor = "08 Errores en Secuencia de NCF" },
+        new TipoBienesyServiciosItem { Id = 9, Valor = "09 Por Cese de operaciones" },
+        new TipoBienesyServiciosItem { Id = 10, Valor = "10 Perdida o Hurto de Talonario(S)" },
+
     };
 
 
-        public List<FormaPagoItem> FormaPago { get; set; } = new List<FormaPagoItem>
-            {
-            new FormaPagoItem { Id = 0, Valor = "" },
-             new FormaPagoItem { Id = 1, Valor = "01 Efectivo" },
-             new FormaPagoItem { Id = 2, Valor = "02 Cheque/Transferencia/Depósito" },
-             new FormaPagoItem { Id = 3, Valor = "03 Tarjeta crédito/débito" },
-             new FormaPagoItem { Id = 4, Valor = "04 Compra a crédito" },
-             new FormaPagoItem { Id = 5, Valor = "05 Permuta" },
-             new FormaPagoItem { Id = 6, Valor = "06 Nota Crédito" },
-             new FormaPagoItem { Id = 7, Valor = "07 Mixto" }
-             };
-        
+     
 
-        public string Generador606txt(List<Invoice606> dataList, O606 data)
+        public string Generador608txt(List<DataList608> dataList, O608 data)
         {
 
-            var archivo = $"606|{data.RNC}|{data.YearMonth.Replace("/", "")}|{dataList.Count()} \n";
+            var archivo = $"608|{data.RNC}|{data.YearMonth.Replace("/", "")}|{dataList.Count()} \n";
             foreach (var item in dataList)
             {
 
                 var fechaComprobante = DateTime.Parse(item.FechaComprobante);
-                var fechaPago = "";
-                if (item.FechaPago != "")
-                {
-                    var fechaPagoParse = DateTime.Parse(item.FechaPago);
-                    fechaPago = $"{fechaPagoParse.Year}{fechaPagoParse.Month}{fechaPagoParse.Day}";
-                }
 
-                string TotalMontoFacturado = (item.TotalMontoFacturado == 0.00m) ? "" : item.TotalMontoFacturado.ToString();
-                string ITBISFacturado = (item.ITBISFacturado == 0.00m) ? "" : item.ITBISFacturado.ToString();
-
-                string ITBISRetenido = (item.ITBISRetenido == 0.00m) ? "" : item.ITBISRetenido.ToString();
-                string ITBISSujetoaProporcionalidad = (item.ITBISSujetoaProporcionalidad == 0.00m) ? "" : item.ITBISSujetoaProporcionalidad.ToString();
-
-                string ITBISLlevadoAlCosto = (item.ITBISLlevadoAlCosto == 0.00m) ? "" : item.ITBISLlevadoAlCosto.ToString();
-
-                string ITBISPorAdelantar = (item.ITBISPorAdelantar == 0.00m) ? "" : item.ITBISPorAdelantar.ToString();
-                string ITBISPersividoEnCompras = (item.ITBISPersividoEnCompras == 0.00m) ? "" : item.ITBISPersividoEnCompras.ToString();
-                string TipoRetencionEnISR = (item.TipoRetencionEnISR == 0.00m) ? "" : item.TipoRetencionEnISR.ToString();
-                string MontoRetencionRenta = (item.MontoRetencionRenta == 0.00m) ? "" : item.MontoRetencionRenta.ToString();
-
-                string IRSPercibidoEnCompras = (item.IRSPercibidoEnCompras == 0.00m) ? "" : item.IRSPercibidoEnCompras.ToString();
-                string ImpuestoSelectivoAlConsumo = (item.ImpuestoSelectivoAlConsumo == 0.00m) ? "" : item.ImpuestoSelectivoAlConsumo.ToString();
-                string OtrosImpuestosTasa = (item.OtrosImpuestosTasa == 0.00m) ? "" : item.OtrosImpuestosTasa.ToString();
-                string MontoPropinaLegal = (item.MontoPropinaLegal == 0.00m) ? "" : item.MontoPropinaLegal.ToString();
-
-                string MontoFacturadoEnServicio = (item.MontoFacturadoEnServicio == 0.00m) ? "" : item.MontoFacturadoEnServicio.ToString();
-                string MontoFacturadoEnBienes = (item.MontoFacturadoEnBienes == 0.00m) ? "" : item.MontoFacturadoEnBienes.ToString();
-
-
-
-                archivo += $"{item.RNCCedulaPasaporte.Replace("-", "")}|" +
-                    $"{item.TipoID}|" +
-                    $"{item.TipoBienesYServiciosComprados}|" +
-                    $"{item.NumeroComprobanteFiscal}" +
-                    $"|{item.NumeroComprobanteFiscalModificado}" +
+                archivo += $"{item.NCF}|" +
                     $"|{fechaComprobante.Year}{fechaComprobante.Month}{fechaComprobante.Day}" +
-                    $"|{fechaPago}" +
-
-                    $"|{MontoFacturadoEnServicio}" +
-                    $"|{MontoFacturadoEnBienes}" +
-                    $"|{TotalMontoFacturado}" +
-                    $"|{ITBISFacturado}" +
-                    $"|{ITBISRetenido}" +
-                    $"|{ITBISSujetoaProporcionalidad}" +
-                    $"|{ITBISLlevadoAlCosto}" +
-                    $"|{ITBISPorAdelantar}" +
-                    $"|{ITBISPersividoEnCompras}" +
-                    $"|{TipoRetencionEnISR}" +
-                    $"|{MontoRetencionRenta}" +
-                    $"|{IRSPercibidoEnCompras}" +
-                    $"|{ImpuestoSelectivoAlConsumo}" +
-                    $"|{OtrosImpuestosTasa}" +
-                    $"|{MontoPropinaLegal}" +
-                    $"|{item.FormaDePago} \n";
+                    $"|{item.TipoAnulacionID}\n";
             }
 
             return archivo;

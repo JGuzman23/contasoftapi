@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace contasoft_api.Controllers
 {
-    
+
     [Route("api/[controller]")]
     [ApiController]
     public class BankController : ControllerBase
@@ -28,7 +28,7 @@ namespace contasoft_api.Controllers
         }
 
         // GET: api/Bank
-       
+
         [HttpGet]
         public async Task<IActionResult> GetBank()
         {
@@ -134,31 +134,34 @@ namespace contasoft_api.Controllers
             {
                 return BadRequest();
             }
-            BankSelected bankSelected = new BankSelected()
-            {
-                Id = bank.BankSelectedID,
-                BankId = bank.Id,
-                AccountNumber = bank.AccountNumber,
-                CompanyId = bank.CompanyId,
-                UpdateDate = DateTime.Now,
-                UserCode = "root",
-                IsActive = true
-
-            };
-
-           
 
             try
             {
+                var bancoSelected = await _context.BankSelected.Where(b => b.Id == id).FirstOrDefaultAsync();
+
+                if (bancoSelected != null)
+                {
+                    bancoSelected.AccountNumber = bank.AccountNumber;
+                    bancoSelected.UpdateDate = DateTime.Now;
+                    bancoSelected.UserCode = "root";
+           
                 // _context.Entry(bankSelected).State = EntityState.Modified;
-                _context.BankSelected.Update(bankSelected);
-                await _context.SaveChangesAsync();
+                    _context.BankSelected.Update(bancoSelected);
+                    await _context.SaveChangesAsync();
 
 
-                response.Message = "Banco Actualizado con éxito. ";
-                response.StatusCode = 1;
-                response.Success = true;
-                
+                    response.Message = "Banco Actualizado con éxito. ";
+                    response.StatusCode = 1;
+                    response.Success = true;
+                }
+                else
+                {
+                    response.Message = "Banco No Encontrado. ";
+                    response.StatusCode = 0;
+                    response.Success = false;
+
+                }
+
 
 
 
@@ -173,7 +176,7 @@ namespace contasoft_api.Controllers
 
             }
 
-            
+
         }
 
         // POST: api/Bank
@@ -193,7 +196,7 @@ namespace contasoft_api.Controllers
                 AccountNumber = bank.AccountNumber,
                 CompanyId = bank.CompanyId,
                 CreateDate = DateTime.Now,
-                UserCode ="root",
+                UserCode = "root",
                 IsActive = true
 
 
@@ -205,7 +208,7 @@ namespace contasoft_api.Controllers
             response.Message = "Creado con Éxito.";
             response.StatusCode = 1;
             response.Success = true;
-           
+
 
             return Ok(response);
         }
