@@ -10,6 +10,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace contasoft_api.Controllers
 {
+    [Authorize]
+
     [Route("api/[controller]")]
     [ApiController]
     public class CompanyController : ControllerBase

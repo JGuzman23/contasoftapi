@@ -31,7 +31,7 @@ namespace contasoft_api.Services
             };
 
             var Sectoken = new JwtSecurityToken(_configuration["Authentication:Issuer"],
-              _configuration["Authentication:Issuer"],claims,
+              _configuration["Authentication:Audience"],claims,
               null,
               expires: DateTime.Now.AddMinutes(120),
               signingCredentials: credentials);

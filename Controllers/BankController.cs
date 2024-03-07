@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace contasoft_api.Controllers
 {
-
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class BankController : ControllerBase
@@ -109,6 +109,10 @@ namespace contasoft_api.Controllers
                 output.Name = bs.Bank.Name;
                 output.Id = bs.Bank.Id;
                 output.BankSelectedID = bs.Id;
+                output.AccountName = bs.AccountName;
+                output.AccountTypeID = bs.AccountTypeID;
+                output.InitialBalance = bs.InitialBalance;
+                output.CurrencyID = bs.CurrencyID;
                 ListaBancos.Add(output);
             });
 
@@ -142,6 +146,10 @@ namespace contasoft_api.Controllers
                 if (bancoSelected != null)
                 {
                     bancoSelected.AccountNumber = bank.AccountNumber;
+                    bancoSelected.AccountName = bank.AccountName;
+                    bancoSelected.AccountTypeID = bank.AccountTypeID;
+                    bancoSelected.InitialBalance = bank.InitialBalance;
+                    bancoSelected.CurrencyID = bank.CurrencyID;
                     bancoSelected.UpdateDate = DateTime.Now;
                     bancoSelected.UserCode = "root";
            
@@ -192,8 +200,12 @@ namespace contasoft_api.Controllers
 
             BankSelected bankSelected = new BankSelected()
             {
-                BankId = bank.BankSelectedID,
+                BankId = bank.Id,
                 AccountNumber = bank.AccountNumber,
+                AccountName = bank.AccountName,
+                AccountTypeID = bank.AccountTypeID,
+                InitialBalance = bank.InitialBalance,
+                CurrencyID = bank.CurrencyID,
                 CompanyId = bank.CompanyId,
                 CreateDate = DateTime.Now,
                 UserCode = "root",

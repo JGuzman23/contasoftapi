@@ -9,6 +9,9 @@ using contasoft_api.Data;
 using contasoft_api.Models;
 using contasoft_api.DTOs.Inputs;
 using contasoft_api.Interfaces;
+using contasoft_api.DTOs;
+using DocumentFormat.OpenXml.Spreadsheet;
+using DocumentFormat.OpenXml.Office2010.Excel;
 
 namespace contasoft_api.Controllers
 {
@@ -27,34 +30,61 @@ namespace contasoft_api.Controllers
 
         // GET: api/Users
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUser()
+        public async Task<IActionResult> GetUserMyUser(int userId, int companyId)
         {
-          if (_context.User == null)
-          {
-              return NotFound();
-          }
-          return await _context.User.ToListAsync();
-        }
-
-        // GET: api/Users/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(int id)
-        {
-          if (_context.User == null)
-          {
-              return NotFound();
-          }
-            var user = await _context.User.FindAsync(id);
-
-            if (user == null)
+            var response = new DefaultResponse();
+            var users = new List<User>();
+            if (_context.User == null)
             {
                 return NotFound();
             }
 
-            return user;
+            var UserCompany = await _context.UserCompany
+                .Where(x => x.CompanyId == companyId)
+                .Where(user => user.UserId != userId)
+                .Include(x => x.User)
+              
+                .ToListAsync();
+
+
+
+            response.StatusCode = 1;
+            response.Success = true;
+            response.Data = UserCompany;
+
+            return Ok(response);
         }
 
- 
+        // GET: api/Users/5
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetUser(int id)
+        {
+            var response = new DefaultResponse();
+
+            if (_context.User == null)
+            {
+                return NotFound();
+            }
+            var user = await _context.User
+                
+                .Where(user=>user.Id==id).FirstOrDefaultAsync();
+
+            if (user == null)
+            {
+                response.Message = "Usuario no encontrado!";
+                response.StatusCode = 0;
+                response.Success = false;
+                return Ok(response);
+            }
+
+            response.StatusCode = 1;
+            response.Success = true;
+            response.Data = user;
+
+            return Ok(response);
+        }
+
+
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUser(int id, User user)
         {
@@ -84,14 +114,15 @@ namespace contasoft_api.Controllers
             return NoContent();
         }
 
-     
+
         [HttpPost]
-        public async Task<ActionResult> Create(CreateUserInput model)
+        public async Task<IActionResult> Create(CreateUserInput model)
         {
-          if (_context.User == null)
-          {
-              return Problem("Entity set 'ContaSoftDbContext.User'  is null.");
-          }
+            var response = new DefaultResponse();
+            if (_context.User == null)
+            {
+                return Problem("Entity set 'ContaSoftDbContext.User'  is null.");
+            }
 
 
             User newUser = new User()
@@ -100,12 +131,11 @@ namespace contasoft_api.Controllers
                 Email = model.Email,
                 Cellphone = model.Cellphone,
                 Username = model.Username,
+                RolId = model.RoleId,
                 PlanId = model.PlanId,
                 CreateDate = DateTime.Now,
-                UpdateDate = DateTime.Now,
                 UserCode = "Root",
                 IsActive = true
-
 
             };
             newUser.Password = _passwordService.Hash(model.Password);
@@ -113,7 +143,12 @@ namespace contasoft_api.Controllers
             _context.User.Add(newUser);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            response.Message = "Usuario creado con éxito!";
+            response.StatusCode = 1;
+            response.Success = true;
+
+
+            return Ok(response);
         }
 
         // DELETE: api/Users/5

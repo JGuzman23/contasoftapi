@@ -23,6 +23,12 @@ namespace contasoft_api.Data
         public DbSet<BankSelected> BankSelected { get; set; }
         public DbSet<Transaction> Transaction { get; set; }
         public DbSet<VoidInvoice> VoidInvoice { get; set; }
+        public DbSet<Currency> Currency { get; set; }
+        public DbSet<Roles> Roles { get; set; }
+        public DbSet<Permissions> Permissions { get; set; }
+        public DbSet<RolesPermission> RolesPermission { get; set; }
+
+
 
     }
 }

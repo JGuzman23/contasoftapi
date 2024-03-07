@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using contasoft_api.Data;
 
@@ -11,9 +12,10 @@ using contasoft_api.Data;
 namespace contasoft_api.Migrations
 {
     [DbContext(typeof(ContaSoftDbContext))]
-    partial class ContaSoftDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240222123756_dev11")]
+    partial class dev11
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -208,9 +210,8 @@ namespace contasoft_api.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Name")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2");
@@ -553,43 +554,13 @@ namespace contasoft_api.Migrations
                     b.ToTable("O608");
                 });
 
-            modelBuilder.Entity("contasoft_api.Models.Permissions", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Permissions");
-                });
-
             modelBuilder.Entity("contasoft_api.Models.Plan", b =>
                 {
-                    b.Property<int?>("ID")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("ID"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
                     b.Property<string>("AccountsNumber")
                         .IsRequired()
@@ -602,12 +573,10 @@ namespace contasoft_api.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Period")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal?>("Price")
+                    b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime?>("UpdateDate")
@@ -617,61 +586,13 @@ namespace contasoft_api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("ID");
-
-                    b.ToTable("Plan");
-                });
-
-            modelBuilder.Entity("contasoft_api.Models.Roles", b =>
-                {
-                    b.Property<int?>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdateDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserCode")
+                    b.Property<string>("period")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("ID");
 
-                    b.ToTable("Roles");
-                });
-
-            modelBuilder.Entity("contasoft_api.Models.RolesPermission", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("PermissionID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RoleID")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PermissionID");
-
-                    b.HasIndex("RoleID");
-
-                    b.ToTable("RolesPermission");
+                    b.ToTable("Plan");
                 });
 
             modelBuilder.Entity("contasoft_api.Models.Transaction", b =>
@@ -761,9 +682,6 @@ namespace contasoft_api.Migrations
                     b.Property<int?>("PlanId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("RolesId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2");
 
@@ -777,8 +695,6 @@ namespace contasoft_api.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("PlanId");
-
-                    b.HasIndex("RolesId");
 
                     b.ToTable("User");
                 });
@@ -950,25 +866,6 @@ namespace contasoft_api.Migrations
                     b.Navigation("Company");
                 });
 
-            modelBuilder.Entity("contasoft_api.Models.RolesPermission", b =>
-                {
-                    b.HasOne("contasoft_api.Models.Permissions", "Permission")
-                        .WithMany()
-                        .HasForeignKey("PermissionID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("contasoft_api.Models.Roles", "Role")
-                        .WithMany()
-                        .HasForeignKey("RoleID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Permission");
-
-                    b.Navigation("Role");
-                });
-
             modelBuilder.Entity("contasoft_api.Models.Transaction", b =>
                 {
                     b.HasOne("contasoft_api.Models.Company", "Company")
@@ -986,13 +883,7 @@ namespace contasoft_api.Migrations
                         .WithMany()
                         .HasForeignKey("PlanId");
 
-                    b.HasOne("contasoft_api.Models.Roles", "Roles")
-                        .WithMany()
-                        .HasForeignKey("RolesId");
-
                     b.Navigation("Plan");
-
-                    b.Navigation("Roles");
                 });
 
             modelBuilder.Entity("contasoft_api.Models.UserCompany", b =>

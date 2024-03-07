@@ -17,7 +17,7 @@ namespace contasoft_api.Services
             string msg = default;
             var stream = new MemoryStream();
           
-            string basePath = Environment.GetEnvironmentVariable("imagendgii");
+            string basePath = "Images";
 
 
 
@@ -44,7 +44,7 @@ namespace contasoft_api.Services
 
                 if (Directory.Exists(basePath))
                 {
-                    byte[] byteList = File.ReadAllBytes(basePath);
+                    byte[] byteList = File.ReadAllBytes(basePath + "/dgii.png");
                     pic = new SLPicture(byteList, DocumentFormat.OpenXml.Packaging.ImagePartType.Png, false);
                     pic.SetPosition(0, 0);
                     sl.InsertPicture(pic);

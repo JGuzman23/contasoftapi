@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using contasoft_api.Data;
 
@@ -11,9 +12,10 @@ using contasoft_api.Data;
 namespace contasoft_api.Migrations
 {
     [DbContext(typeof(ContaSoftDbContext))]
-    partial class ContaSoftDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240307193022_dev13")]
+    partial class dev13
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -553,7 +555,7 @@ namespace contasoft_api.Migrations
                     b.ToTable("O608");
                 });
 
-            modelBuilder.Entity("contasoft_api.Models.Permissions", b =>
+            modelBuilder.Entity("contasoft_api.Models.Permission", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -649,29 +651,6 @@ namespace contasoft_api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
-                });
-
-            modelBuilder.Entity("contasoft_api.Models.RolesPermission", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("PermissionID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RoleID")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PermissionID");
-
-                    b.HasIndex("RoleID");
-
-                    b.ToTable("RolesPermission");
                 });
 
             modelBuilder.Entity("contasoft_api.Models.Transaction", b =>
@@ -948,25 +927,6 @@ namespace contasoft_api.Migrations
                         .IsRequired();
 
                     b.Navigation("Company");
-                });
-
-            modelBuilder.Entity("contasoft_api.Models.RolesPermission", b =>
-                {
-                    b.HasOne("contasoft_api.Models.Permissions", "Permission")
-                        .WithMany()
-                        .HasForeignKey("PermissionID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("contasoft_api.Models.Roles", "Role")
-                        .WithMany()
-                        .HasForeignKey("RoleID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Permission");
-
-                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("contasoft_api.Models.Transaction", b =>

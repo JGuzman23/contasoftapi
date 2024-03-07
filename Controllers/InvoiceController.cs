@@ -6,6 +6,7 @@ using contasoft_api.Interfaces;
 using contasoft_api.Models;
 using DocumentFormat.OpenXml.ExtendedProperties;
 using DocumentFormat.OpenXml.Wordprocessing;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +19,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace contasoft_api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class InvoiceController : ControllerBase
@@ -84,6 +86,7 @@ namespace contasoft_api.Controllers
             }
             try
             {
+                VerificarPropiedadesNulas(input);
                 var company = await _context.Company.FindAsync(input.CompanyID);
                 Operacion607 = await _context.O607.Where(x => x.CompanyId == company.Id && x.YearMonth == anomesFactura).OrderBy(x => x.Id).FirstOrDefaultAsync();
 
@@ -484,6 +487,7 @@ namespace contasoft_api.Controllers
         [HttpPost("invoice606")]
         public async Task<IActionResult> CreateInvoice606(Invoice606Input input)
         {
+
 
             var response = new DefaultResponse();
             var anomesFactura = DateTime.Parse(input.FechaComprobante).ToString("yyyy/MM");
@@ -1028,13 +1032,13 @@ namespace contasoft_api.Controllers
 
 
                 // response.Data = Operacion606;
-                response.Message = "606 descargado con éxito!";
+                response.Message = "608 descargado con éxito!";
                 response.StatusCode = 1;
                 response.Success = true;
             }
             catch (Exception ex)
             {
-                response.Message = "Error descargar el 606.";
+                response.Message = "Error descargar el 608.";
                 response.StatusCode = 0;
                 response.Success = false;
 
@@ -1112,6 +1116,32 @@ namespace contasoft_api.Controllers
 
             }
             return Ok(response);
+        }
+
+        public static void VerificarPropiedadesNulas<T>(T entidad)
+        {
+            var propiedades = typeof(T).GetProperties();
+
+            foreach (var propiedad in propiedades)
+            {
+
+                if (propiedad.PropertyType == typeof(string) && propiedad.GetValue(entidad) == null)
+                {
+                    propiedad.SetValue(entidad, "");
+                }
+                else if (propiedad.PropertyType == typeof(int) && propiedad.GetValue(entidad) == null)
+                {
+                    propiedad.SetValue(entidad, 0);
+                }
+                else if (propiedad.PropertyType == typeof(decimal) && propiedad.GetValue(entidad) == null)
+                {
+                    propiedad.SetValue(entidad, 0m);
+                }
+                else if (propiedad.PropertyType == typeof(double) && propiedad.GetValue(entidad) == null)
+                {
+                    propiedad.SetValue(entidad, 0.0);
+                }
+            }
         }
 
     }

@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace contasoft_api.Controllers
 {
+    [Authorize]
+
     [Route("api/[controller]")]
     [ApiController]
     public class TransactionsController : ControllerBase
@@ -26,29 +28,24 @@ namespace contasoft_api.Controllers
             _context = context;
         }
 
-        // GET: api/Transactions
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Transaction>>> GetTransaction()
-        {
-          if (_context.Transaction == null)
-          {
-              return NotFound();
-          }
-            return await _context.Transaction.ToListAsync();
-        }
 
-        // GET: api/Transactions/5
-   
-        [HttpGet("{companyId}")]
-        public async Task<IActionResult> GetTransactionByCompany(int companyId)
+
+        [HttpGet]
+        public async Task<IActionResult> GetTransactionByCompany(int companyId, string fromDate, string endDate, string cuenta)
         {
             var response = new DefaultResponse();
             List<TransactionOutput> transactionsList = new List<TransactionOutput>();
             if (_context.Transaction == null)
-          {
-              return NotFound();
-          }
-            var transactions = await _context.Transaction.Where(x=>x.CompanyId == companyId).OrderByDescending(x=>x.CreateDate).ToListAsync();
+            {
+                return NotFound();
+            }
+            var fechaDesde = DateTime.Parse(fromDate);
+            var fechaHasta = DateTime.Parse(endDate);
+            var transactions = await _context.Transaction
+                .Where(x => x.CompanyId == companyId)
+                .Where(t => t.TransactionDate >= fechaDesde && t.TransactionDate <= fechaHasta)
+                .Where(t => t.BankNumberIn == cuenta || t.BankNumberOut == cuenta)
+                .OrderByDescending(x => x.CreateDate).ToListAsync();
 
             if (transactions == null)
             {
@@ -60,7 +57,52 @@ namespace contasoft_api.Controllers
                 TransactionOutput output = new TransactionOutput()
                 {
                     Id = tran.Id,
-                    BankNumberOut = tran.BankNumberOut,
+                    BankNumberOut = (string)tran.BankNumberOut,
+                    BankNumberIn = tran.BankNumberIn,
+                    Amount = tran.Amount,
+                    NoCheck = tran.NoCheck,
+                    Concept = tran.Concept,
+                    Tipo = tran.Tipo,
+                    TransactionDate = tran.TransactionDate,
+                    CompanyId = tran.CompanyId,
+                };
+
+                transactionsList.Add(output);
+            });
+
+            response.Message = $@"{transactionsList.Count} transacciones encontradas!";
+            response.StatusCode = 1;
+            response.Success = true;
+            response.Data = transactionsList;
+
+            return Ok(response);
+        }
+
+        [HttpGet("{CompanyID}")]
+        public async Task<IActionResult> GetAllTransactionByCompany(int companyId)
+        {
+            var response = new DefaultResponse();
+            List<TransactionOutput> transactionsList = new List<TransactionOutput>();
+            if (_context.Transaction == null)
+            {
+                return NotFound();
+            }
+
+            var transactions = await _context.Transaction
+                .Where(x => x.CompanyId == companyId)
+                .OrderByDescending(x => x.CreateDate).ToListAsync();
+
+            if (transactions == null)
+            {
+                return NotFound();
+            }
+
+            transactions.ForEach(tran =>
+            {
+                TransactionOutput output = new TransactionOutput()
+                {
+                    Id = tran.Id,
+                    BankNumberOut = (string)tran.BankNumberOut,
                     BankNumberIn = tran.BankNumberIn,
                     Amount = tran.Amount,
                     NoCheck = tran.NoCheck,
@@ -119,33 +161,33 @@ namespace contasoft_api.Controllers
         {
             var response = new DefaultResponse();
             if (_context.Transaction == null)
-          {
-              return Problem("Entity set 'ContaSoftDbContext.Transaction'  is null.");
-          }
+            {
+                return Problem("Entity set 'ContaSoftDbContext.Transaction'  is null.");
+            }
 
 
             Transaction transaction = new Transaction()
             {
-                Id = model.Id,
+
                 BankNumberOut = model.BankNumberOut,
                 BankNumberIn = model.BankNumberIn,
-                Amount = model.Amount,
+                Amount = (decimal)model.Amount,
                 NoCheck = model.NoCheck,
                 Concept = model.Concept,
                 Tipo = model.Tipo,
-                TransactionDate = model.TransactionDate,
-                CompanyId = model.CompanyId,
-                UserCode="root",
+                TransactionDate = DateTime.Parse(model.TransactionDate),
+                CompanyId = (int)model.CompanyId,
+                UserCode = "root",
                 CreateDate = DateTime.Now,
                 IsActive = true
             };
             _context.Transaction.Add(transaction);
             await _context.SaveChangesAsync();
 
-            response.Message = "Success";
+            response.Message = "Transacción registrada.";
             response.StatusCode = 1;
             response.Success = true;
-            
+
 
             return Ok(response);
         }

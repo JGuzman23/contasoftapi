@@ -283,9 +283,10 @@ C:\proyect\SoftwareContable\contasoft-api\contasoft-api\obj\Debug\net6.0\staticw
 C:\proyect\SoftwareContable\contasoft-api\contasoft-api\obj\Debug\net6.0\staticwebassets.build.json
 C:\proyect\SoftwareContable\contasoft-api\contasoft-api\obj\Debug\net6.0\staticwebassets.development.json
 C:\proyect\SoftwareContable\contasoft-api\contasoft-api\obj\Debug\net6.0\scopedcss\bundle\contasoft-api.styles.css
-C:\proyect\SoftwareContable\contasoft-api\contasoft-api\obj\Debug\net6.0\contasoft-api.csproj.CopyComplete
 C:\proyect\SoftwareContable\contasoft-api\contasoft-api\obj\Debug\net6.0\contasoft-api.dll
 C:\proyect\SoftwareContable\contasoft-api\contasoft-api\obj\Debug\net6.0\refint\contasoft-api.dll
 C:\proyect\SoftwareContable\contasoft-api\contasoft-api\obj\Debug\net6.0\contasoft-api.pdb
 C:\proyect\SoftwareContable\contasoft-api\contasoft-api\obj\Debug\net6.0\contasoft-api.genruntimeconfig.cache
 C:\proyect\SoftwareContable\contasoft-api\contasoft-api\obj\Debug\net6.0\ref\contasoft-api.dll
+C:\proyect\SoftwareContable\contasoft-api\contasoft-api\obj\Debug\net6.0\contasoft-api.sourcelink.json
+C:\proyect\SoftwareContable\contasoft-api\contasoft-api\obj\Debug\net6.0\contasof.11C1E3C1.Up2Date

@@ -20,7 +20,7 @@
             string msg = default;
             // string devPath = Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"../../../../ServicioEmisionArchivo607DGII/Images/"));
             //string prodPath = Environment.GetEnvironmentVariable("MMC_AVANEX_ARCHIVO_607_BASE_PATH");
-            string basePath = Environment.GetEnvironmentVariable("imagendgii");
+            string basePath = "Images";
             var stream = new MemoryStream();
 
             SLDocument sl = new SLDocument();
@@ -46,7 +46,7 @@
 
                 if (Directory.Exists(basePath))
                 {
-                    byte[] byteList = File.ReadAllBytes(basePath);
+                    byte[] byteList = File.ReadAllBytes(basePath+"/dgii.png");
                     pic = new SLPicture(byteList, DocumentFormat.OpenXml.Packaging.ImagePartType.Png, false);
                     pic.SetPosition(0, 0);
                     sl.InsertPicture(pic);
