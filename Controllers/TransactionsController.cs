@@ -12,6 +12,7 @@ using contasoft_api.DTOs.Outputs;
 using System.ComponentModel.Design;
 using contasoft_api.DTOs.Inputs;
 using Microsoft.AspNetCore.Authorization;
+using System.Globalization;
 
 namespace contasoft_api.Controllers
 {
@@ -39,8 +40,10 @@ namespace contasoft_api.Controllers
             {
                 return NotFound();
             }
-            var fechaDesde = DateTime.Parse(fromDate);
-            var fechaHasta = DateTime.Parse(endDate);
+            var dateFormat = "dd/MM/yyyy"; // Adjust this format according to your date string format
+            var fechaDesde = DateTime.ParseExact(fromDate, dateFormat, CultureInfo.InvariantCulture);
+            var fechaHasta = DateTime.ParseExact(endDate, dateFormat, CultureInfo.InvariantCulture);
+
             var transactions = await _context.Transaction
                 .Where(x => x.CompanyId == companyId)
                 .Where(t => t.TransactionDate >= fechaDesde && t.TransactionDate <= fechaHasta)

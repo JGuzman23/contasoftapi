@@ -43,7 +43,7 @@ namespace contasoft_api.Controllers
                 .Where(x => x.CompanyId == companyId)
                 .Where(user => user.UserId != userId)
                 .Include(x => x.User)
-              
+                .Select(x => x.User)
                 .ToListAsync();
 
 
@@ -140,7 +140,7 @@ namespace contasoft_api.Controllers
             };
             newUser.Password = _passwordService.Hash(model.Password);
 
-            _context.User.Add(newUser);
+             _context.User.Add(newUser);
             await _context.SaveChangesAsync();
 
             response.Message = "Usuario creado con éxito!";
