@@ -9,5 +9,6 @@
         public string? Telefono { get; set; }
         public byte[]? Photo { get; set; }
         public int UserId { get; set; }
+        public bool IsActive { get; set; }
     }
 }

@@ -9,6 +9,7 @@
         public string? Username { get; set; }
         public int? PlanId { get; set; }
         public int RoleId { get; set; }
-        
+        public PaypalReturnInput Payment { get; set; }
+
     }
 }

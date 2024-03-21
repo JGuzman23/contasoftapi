@@ -12,6 +12,7 @@ using contasoft_api.Interfaces;
 using contasoft_api.DTOs;
 using DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml.Office2010.Excel;
+using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace contasoft_api.Controllers
 {
@@ -149,6 +150,7 @@ namespace contasoft_api.Controllers
 
 
             return Ok(response);
+            
         }
 
         // DELETE: api/Users/5

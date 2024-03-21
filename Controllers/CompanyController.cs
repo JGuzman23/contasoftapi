@@ -3,6 +3,7 @@ using contasoft_api.DTOs;
 using contasoft_api.DTOs.Inputs;
 using contasoft_api.DTOs.Outputs;
 using contasoft_api.Models;
+using DocumentFormat.OpenXml.Office.CoverPageProps;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -23,19 +24,20 @@ namespace contasoft_api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAsync (int userID)
+        public async Task<IActionResult> GetAsync(int userID)
         {
             var response = new DefaultResponse();
             if (userID == 0 && userID == null)
             {
                 return BadRequest();
             }
-           
+
             List<CompanyOutput> ReturnCompany = new List<CompanyOutput>();
 
             var company = await _contaSoftDbContext.UserCompany
-                .Where(x=>x.UserId == userID)
-                .Include(x=>x.Company)
+                .Where(x => x.UserId == userID)
+                .Include(x => x.Company)
+                .Where(company => company.Company.IsActive)
                 .ToListAsync();
 
             foreach (var item in company)
@@ -45,7 +47,7 @@ namespace contasoft_api.Controllers
                     Name = item.Company.Name,
                     RNC = item.Company.RNC,
                     Id = item.Company.Id,
-                    
+
                 };
                 ReturnCompany.Add(companyOutput);
             }
@@ -53,6 +55,38 @@ namespace contasoft_api.Controllers
             response.StatusCode = 1;
             response.Success = true;
             response.Data = ReturnCompany;
+
+            return Ok(response);
+
+        }
+        [HttpGet("{companyId}")]
+        public async Task<IActionResult> GetOneAsync(int companyId)
+        {
+            var response = new DefaultResponse();
+
+
+
+            var company = await _contaSoftDbContext.Company
+                .Where(x => x.Id == companyId)
+                .FirstOrDefaultAsync();
+
+
+            CompanyOutput companyOutput = new CompanyOutput()
+            {
+                Name = company.Name,
+                RNC = company.RNC,
+                Id = company.Id,
+                Telefono = company.Telefono,
+                Address = company.Address,
+                Photo = company.Photo,
+                IsActive = company.IsActive,
+            };
+
+
+            response.Message = "Success";
+            response.StatusCode = 1;
+            response.Success = true;
+            response.Data = companyOutput;
 
             return Ok(response);
 
@@ -104,7 +138,7 @@ namespace contasoft_api.Controllers
                 response.Message = $"Error al crear: {ex.Message}";
                 response.StatusCode = 0;
                 response.Success = false;
-                
+
             }
 
             var company = await _contaSoftDbContext.UserCompany
@@ -127,7 +161,51 @@ namespace contasoft_api.Controllers
 
             return Ok(response);
 
-            
+
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Update(CreateCompanyInput model)
+        {
+            var response = new DefaultResponse();
+
+            if (model == null)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                var company = await _contaSoftDbContext.Company.FirstOrDefaultAsync(x => x.Id == model.Id);
+
+                company.Name = model.Name;
+                company.RNC = model.RNC;
+                company.Address = model.Address;
+                company.Telefono = model.Telefono;
+                company.Photo = model.Photo;
+                company.IsActive = model.IsActive;
+
+                _contaSoftDbContext.Company.Update(company);
+                await _contaSoftDbContext.SaveChangesAsync();
+
+
+                response.Message = "Actualizado correctamente";
+                response.StatusCode = 1;
+                response.Success = true;
+            }
+            catch (Exception ex)
+            {
+                response.Message = $"Error al actualizar: {ex.Message}";
+                response.StatusCode = 0;
+                response.Success = false;
+
+            }
+
+
+
+            return Ok(response);
+
+
         }
     }
 }

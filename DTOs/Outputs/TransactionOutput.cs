@@ -5,7 +5,8 @@
         public int Id { get; set; }
         public string BankNumberOut { get; set; }
         public string BankNumberIn { get; set; }
-        public decimal Amount { get; set; }
+        public decimal Debit { get; set; }
+        public decimal Credit { get; set; }
         public string NoCheck { get; set; }
         public string Concept { get; set; }
         public string Tipo { get; set; }

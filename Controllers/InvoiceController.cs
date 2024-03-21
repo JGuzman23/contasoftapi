@@ -254,14 +254,31 @@ namespace contasoft_api.Controllers
 
                     await _context.O607.AddAsync(Operacion607);
                     await _context.SaveChangesAsync();
+
+                    response.Message = "607 creado con éxito!";
+                    response.StatusCode = 1;
+                    response.Success = true;
                 }
+                else
+                {
+                    if (Operacion607.IsActive)
+                    {
+                        response.Message = "Este 607 ya existe!";
+                        response.StatusCode = 0;
+                        response.Success = false;
+                    }
+                    else
+                    {
+                        Operacion607.IsActive = true;
+                        _context.O607.Update(Operacion607);
+                        await _context.SaveChangesAsync();
+                        response.Message = "6067 creado con éxito!";
+                        response.StatusCode = 1;
+                        response.Success = true;
+                    }
 
 
-
-                // response.Data = Operacion606;
-                response.Message = "607 creado con éxito!";
-                response.StatusCode = 1;
-                response.Success = true;
+                }
             }
             catch (Exception ex)
             {
@@ -658,20 +675,35 @@ namespace contasoft_api.Controllers
 
                     await _context.O606.AddAsync(Operacion606);
                     await _context.SaveChangesAsync();
+                    response.Message = "606 creado con éxito!";
+                    response.StatusCode = 1;
+                    response.Success = true;
                 }
                 else
                 {
+                    if (Operacion606.IsActive)
+                    {
+                        response.Message = "Este 606 ya existe!";
+                        response.StatusCode = 0;
+                        response.Success = false;
+                    }
+                    else
+                    {
+                        Operacion606.IsActive = true;
+                        _context.O606.Update(Operacion606);
+                        await _context.SaveChangesAsync();
+                        response.Message = "606 creado con éxito!";
+                        response.StatusCode = 1;
+                        response.Success = true;
+                    }
 
-                    Operacion606.IsActive = true;
-                    _context.O606.Update(Operacion606);
-                    await _context.SaveChangesAsync();
+                   
                 }
 
 
                 // response.Data = Operacion606;
-                response.Message = "606 creado con éxito!";
-                response.StatusCode = 1;
-                response.Success = true;
+                
+               
             }
             catch (Exception ex)
             {
@@ -1070,13 +1102,7 @@ namespace contasoft_api.Controllers
 
                     var o608 = await _context.O608.Where(x => x.CompanyId == input.CompanyID).OrderBy(x => x.Id).LastOrDefaultAsync();
 
-                    if (o608 != null) {
                     
-                        if(DateTime.Parse(o608.YearMonth).ToString("yyyy/MM") != anomesActual)
-                        {
-                            o608.Id = 0;
-                        }
-                    }
                     VoidInvoice voidInvoice = new VoidInvoice()
                     {
                         Tipo = input.Tipo,

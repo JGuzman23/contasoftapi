@@ -143,6 +143,38 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "contasoft_api.Controllers.CompanyController",
+    "Method": "Update",
+    "RelativePath": "api/Company",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "contasoft_api.DTOs.Inputs.CreateCompanyInput",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "contasoft_api.Controllers.CompanyController",
+    "Method": "GetOneAsync",
+    "RelativePath": "api/Company/{companyId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "companyId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "contasoft_api.Controllers.CurrencyController",
     "Method": "GetBank",
     "RelativePath": "api/Currency",
@@ -448,6 +480,16 @@
         "IsRequired": true
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "contasoft_api.Controllers.PlanController",
+    "Method": "GetAllAsync",
+    "RelativePath": "api/Plan",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   },
   {

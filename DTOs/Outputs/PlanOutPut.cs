@@ -1,8 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace contasoft_api.Models
+﻿namespace contasoft_api.DTOs.Outputs
 {
-    public class Plan : AuditLog
+    public class PlanOutPut
     {
         public int? ID { get; set; }
         public string? Name { get; set; }
