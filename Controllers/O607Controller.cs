@@ -7,6 +7,8 @@ using contasoft_api.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using DocumentFormat.OpenXml.Office.CoverPageProps;
+using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace contasoft_api.Controllers
 {
@@ -28,7 +30,7 @@ namespace contasoft_api.Controllers
         {
 
             var response = new DefaultResponse();
-            var ListaDeFacturas = new List<Invoice607>();
+            var ListaDeFacturas = new List<InvoiceIncome>();
             if (_context.O607 == null)
             {
                 return NotFound();
@@ -40,8 +42,10 @@ namespace contasoft_api.Controllers
 
                 foreach (var maestro in Operacion607)
                 {
-                    var facturas = await _context.Invoice607
-                        .Where(x => x.O607Id == maestro.Id && x.Deleted == false)
+                    var facturas = await _context.InvoiceIncome
+                        .Include(p => p.Products)
+                        .Include(x => x.Invoice607)
+                        .Where(x => x.Invoice607.O607Id == maestro.Id && x.Deleted == false)
                         .ToListAsync();
 
 
@@ -64,11 +68,12 @@ namespace contasoft_api.Controllers
         }
 
         [HttpPost("invoice607")]
-        public async Task<IActionResult> CreateInvoice607(Invoice607Input input)
+        public async Task<IActionResult> CreateInvoice607(InvoiceIncomeInput input)
         {
             var response = new DefaultResponse();
-            var anomesFactura = DateTime.Parse(input.FechaComprobante).ToString("yyyy/MM");
+            var anomesFactura = DateTime.Parse(input.Invoice607.FechaComprobante).ToString("yyyy/MM");
             var Operacion607 = new O607();
+            List<InvoiceProduct> products = new List<InvoiceProduct>();
             if (_context.O607 == null)
             {
                 return NotFound();
@@ -76,7 +81,9 @@ namespace contasoft_api.Controllers
             try
             {
                 VerificarPropiedadesNulas(input);
+
                 var company = await _context.Company.FindAsync(input.CompanyID);
+
                 Operacion607 = await _context.O607.Where(x => x.CompanyId == company.Id && x.YearMonth == anomesFactura).OrderBy(x => x.Id).FirstOrDefaultAsync();
 
 
@@ -100,38 +107,67 @@ namespace contasoft_api.Controllers
 
                 Invoice607 Invoice = new Invoice607()
                 {
-                    RNCCedulaPasaporte = input.RNCCedulaPasaporte,
-                    TipoIdentificación = input.TipoIdentificacion,
-                    NumeroComprobanteFiscal = input.NumeroComprobanteFiscal,
-                    NumeroComprobanteFiscalModificado = input.NumeroComprobanteFiscalModificado,
-                    TipoIngreso = input.TipoIngreso,
-                    FechaComprobante = input.FechaComprobante,
-                    FechaRetención = input.FechaRetencion,
-                    MontoFacturado = input.MontoFacturado,
-                    ITBISFacturado = input.ITBISFacturado,
-                    ITBISRetenidoporTerceros = input.ITBISRetenidoporTerceros,
-                    ITBISPercibido = input.ITBISPercibido,
-                    RetenciónRentaporTerceros = input.RetencionRentaporTerceros,
-                    ISRPercibido = input.ITBISPercibido,
-                    ImpuestoSelectivoalConsumo = input.ImpuestoSelectivoalConsumo,
-                    OtrosImpuestos_Tasas = input.OtrosImpuestos_Tasas,
-                    MontoPropinaLegal = input.MontoPropinaLegal,
-                    Efectivo = input.Efectivo,
-                    Cheque_Transferencia_Depósito = input.Cheque_Transferencia_Deposito,
-                    TarjetaDébito_Crédito = input.TarjetaDebito_Credito,
-                    VentaACrédito = input.VentaACredito,
-                    BonosOCertificadosRegalo = input.BonosOCertificadosRegalo,
-                    Permuta = input.Permuta,
-                    OtrasFormasVentas = input.OtrasFormasVentas,
+                    RNCCedulaPasaporte = input.Invoice607.RNCCedulaPasaporte,
+                    TipoIdentificación = input.Invoice607.TipoIdentificacion,
+                    NumeroComprobanteFiscal = input.Invoice607.NumeroComprobanteFiscal,
+                    NumeroComprobanteFiscalModificado = input.Invoice607.NumeroComprobanteFiscalModificado,
+                    TipoIngreso = input.Invoice607.TipoIngreso,
+                    FechaComprobante = input.Invoice607.FechaComprobante,
+                    FechaRetención = input.Invoice607.FechaRetencion,
+                    MontoFacturado = input.Invoice607.MontoFacturado,
+                    ITBISFacturado = input.Invoice607.ITBISFacturado,
+                    ITBISRetenidoporTerceros = input.Invoice607.ITBISRetenidoporTerceros,
+                    ITBISPercibido = input.Invoice607.ITBISPercibido,
+                    RetenciónRentaporTerceros = input.Invoice607.RetencionRentaporTerceros,
+                    ISRPercibido = input.Invoice607.ITBISPercibido,
+                    ImpuestoSelectivoalConsumo = input.Invoice607.ImpuestoSelectivoalConsumo,
+                    OtrosImpuestos_Tasas = input.Invoice607.OtrosImpuestos_Tasas,
+                    MontoPropinaLegal = input.Invoice607.MontoPropinaLegal,
+                    Efectivo = input.Invoice607.Efectivo,
+                    Cheque_Transferencia_Depósito = input.Invoice607.Cheque_Transferencia_Deposito,
+                    TarjetaDébito_Crédito = input.Invoice607.TarjetaDebito_Credito,
+                    VentaACrédito = input.Invoice607.VentaACredito,
+                    BonosOCertificadosRegalo = input.Invoice607.BonosOCertificadosRegalo,
+                    Permuta = input.Invoice607.Permuta,
+                    OtrasFormasVentas = input.Invoice607.OtrasFormasVentas,
                     UserCode = "root",
                     CreateDate = DateTime.Now,
                     IsActive = true,
-                    Deleted = false,
                     O607Id = Operacion607.Id
 
                 };
-
                 await _context.Invoice607.AddAsync(Invoice);
+                await _context.SaveChangesAsync();
+
+                foreach (var producto in input.Products)
+                {
+                    InvoiceProduct product = new InvoiceProduct()
+                    {
+                        Name = producto.Name,
+                        Price = producto.Price,
+                        Amount = producto.Amount,
+                        Total = producto.Total,
+                    };
+                    products.Add(product);
+
+                }
+
+                InvoiceIncome Income = new InvoiceIncome()
+                {
+                    Note = input.Note,
+                    InvoiceNumber = input.InvoiceNumber,
+                    CompanyName = input.CompanyName,
+                    CompanyAddress = input.CompanyAddress,
+                    Invoice607Id = Invoice.Id,
+                    Products = products,
+                    Deleted = false,
+                    Status = "Completada",
+                    IsActive = true,
+                    CreateDate = DateTime.Now,
+                    UserCode = "root"
+
+                };
+                await _context.InvoiceIncome.AddAsync(Income);
                 await _context.SaveChangesAsync();
 
                 response.Message = "Factura registrada con éxito";
@@ -141,204 +177,6 @@ namespace contasoft_api.Controllers
             catch (Exception ex)
             {
                 response.Message = "Error al registrar esta factura.";
-                response.StatusCode = 0;
-                response.Success = false;
-
-            }
-            return Ok(response);
-        }
-
-
-        [HttpGet("607/{companyID}")]
-        public async Task<IActionResult> GetAll607ByCompany(int companyID)
-        {
-
-            var response = new DefaultResponse();
-            var ListaDeFacturas = new List<Invoice607>();
-            if (_context.O607 == null)
-            {
-                return NotFound();
-            }
-
-            try
-            {
-                List<O607Output> result = new List<O607Output>();
-
-                var Operacion607s = await _context.O607.Where(x => x.CompanyId == companyID && x.IsActive).ToListAsync();
-
-
-                foreach (var Operacion607 in Operacion607s)
-                {
-                    var totalInvoiced = 0.00m;
-                    var ItbisTotal = 0.00m;
-
-                    var Invoices = await _context.Invoice607.Where(x => x.O607Id == Operacion607.Id && x.IsActive && x.Deleted == false).ToListAsync();
-
-                    foreach (var invoice in Invoices)
-                    {
-                        totalInvoiced += (decimal)invoice.MontoFacturado;
-                        ItbisTotal += (decimal)invoice.ITBISFacturado;
-                    }
-
-                    O607Output output = new O607Output
-                    {
-                        Id = Operacion607.Id,
-                        Name = Operacion607.Name,
-                        YearMonth = Operacion607.YearMonth,
-                        Amount = Invoices.Count(),
-                        ITBISTotal = ItbisTotal,
-                        InvoicedAmount = totalInvoiced,
-                        RNC = Operacion607.RNC,
-                        IsActive = Operacion607.IsActive,
-                        CreateDate = Operacion607.CreateDate,
-
-
-
-                    };
-
-                    result.Add(output);
-
-                }
-
-                response.Data = result;
-                response.Message = "Success";
-                response.StatusCode = 1;
-                response.Success = true;
-            }
-            catch (Exception ex)
-            {
-                response.Message = "Error al obtener las facturas.";
-                response.StatusCode = 0;
-                response.Success = false;
-
-            }
-            return Ok(response);
-        }
-
-        [HttpPost("607")]
-        public async Task<IActionResult> Create607(Generar607Input data)
-        {
-            var response = new DefaultResponse();
-            var ListaDeFacturas = new List<Invoice606>();
-            if (_context.O606 == null)
-            {
-                return NotFound();
-            }
-
-            try
-            {
-                var Operacion607 = await _context.O607.Where(x => x.CompanyId == data.CompanyID && x.YearMonth == data.Anomes).FirstOrDefaultAsync();
-                var company = await _context.Company.FindAsync(data.CompanyID);
-
-                if (Operacion607 == null)
-                {
-                    Operacion607 = new O607();
-                    Operacion607.RNC = data.RNC;
-                    Operacion607.YearMonth = data.Anomes;
-                    Operacion607.CompanyId = data.CompanyID;
-                    Operacion607.Name = $@"607-{company.Name}-{Operacion607.YearMonth.Replace("/", "")}";
-                    Operacion607.CreateDate = DateTime.Now;
-                    Operacion607.UserCode = "root";
-                    Operacion607.IsActive = true;
-
-                    await _context.O607.AddAsync(Operacion607);
-                    await _context.SaveChangesAsync();
-
-                    response.Message = "607 creado con éxito!";
-                    response.StatusCode = 1;
-                    response.Success = true;
-                }
-                else
-                {
-                    if (Operacion607.IsActive)
-                    {
-                        response.Message = "Este 607 ya existe!";
-                        response.StatusCode = 0;
-                        response.Success = false;
-                    }
-                    else
-                    {
-                        Operacion607.IsActive = true;
-                        _context.O607.Update(Operacion607);
-                        await _context.SaveChangesAsync();
-                        response.Message = "6067 creado con éxito!";
-                        response.StatusCode = 1;
-                        response.Success = true;
-                    }
-
-
-                }
-            }
-            catch (Exception ex)
-            {
-                response.Message = "Error generar el 607.";
-                response.StatusCode = 0;
-                response.Success = false;
-
-            }
-            return Ok(response);
-        }
-
-        [HttpPost("descargar/607")]
-        public async Task<IActionResult> Descargar607(DescargarInput model)
-        {
-            var response = new DefaultResponse();
-            var ListaDeFacturas = new List<Invoice607>();
-            if (_context.O607 == null)
-            {
-                return NotFound();
-            }
-
-            try
-            {
-                var Operacion607 = await _context.O607.Where(x => x.Id == model.Id && x.IsActive).FirstOrDefaultAsync();
-
-
-                if (Operacion607 != null)
-                {
-                    var invoices = await _context.Invoice607.Where(x => x.O607Id == model.Id && x.IsActive).ToListAsync();
-                    if (invoices == null)
-                    {
-                        invoices = new List<Invoice607> { };
-                    }
-                    if (model.Formato == 23)
-                    {
-                        try
-                        {
-                            var document = _generador607.Generate607xlsx(invoices, Operacion607);
-                            response.Data = File(document, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", Operacion607.Name + ".xlsx");
-
-
-                        }
-                        catch (Exception r)
-                        {
-
-                            throw;
-                        }
-
-                    }
-                    else if (model.Formato == 19)
-                    {
-
-                        string archivo = _generador607.Generador607txt(invoices, Operacion607);
-                        response.Data = archivo;
-                    }
-
-                }
-                else
-                {
-                    response.Message = $"607 no encontrado id:{model.Id},formato:{model.Formato} ";
-                }
-
-
-                // response.Data = Operacion606;
-                response.Message = "607 descargado con éxito!";
-                response.StatusCode = 1;
-                response.Success = true;
-            }
-            catch (Exception ex)
-            {
-                response.Message = $"Error descargar el 607. {ex.Message}";
                 response.StatusCode = 0;
                 response.Success = false;
 
@@ -362,7 +200,6 @@ namespace contasoft_api.Controllers
             }
             try
             {
-                var Operacion606 = await _context.O607.Where(x => x.CompanyId == input.CompanyID && x.YearMonth == anomesFactura).OrderBy(x => x.Id).FirstOrDefaultAsync();
                 var invoice = await _context.Invoice607.FindAsync(id);
 
 
@@ -431,7 +268,7 @@ namespace contasoft_api.Controllers
             try
             {
                 var invoice = await _context.Invoice607.FindAsync(id);
-                invoice.Deleted = true;
+
                 invoice.UpdateDate = DateTime.Now;
                 _context.Invoice607.Update(invoice);
                 await _context.SaveChangesAsync();
@@ -452,6 +289,206 @@ namespace contasoft_api.Controllers
 
             return Ok(response);
         }
+
+        [HttpGet("{companyID}")]
+        public async Task<IActionResult> GetAll607ByCompany(int companyID)
+        {
+
+            var response = new DefaultResponse();
+            var ListaDeFacturas = new List<Invoice607>();
+            if (_context.O607 == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                List<O607Output> result = new List<O607Output>();
+
+                var Operacion607s = await _context.O607.Where(x => x.CompanyId == companyID && x.IsActive).ToListAsync();
+
+
+                foreach (var Operacion607 in Operacion607s)
+                {
+                    var totalInvoiced = 0.00m;
+                    var ItbisTotal = 0.00m;
+
+                    var Invoices = await _context.Invoice607.Where(x => x.O607Id == Operacion607.Id && x.IsActive).ToListAsync();
+
+                    foreach (var invoice in Invoices)
+                    {
+                        totalInvoiced += (decimal)invoice.MontoFacturado;
+                        ItbisTotal += (decimal)invoice.ITBISFacturado;
+                    }
+
+                    O607Output output = new O607Output
+                    {
+                        Id = Operacion607.Id,
+                        Name = Operacion607.Name,
+                        YearMonth = Operacion607.YearMonth,
+                        Amount = Invoices.Count(),
+                        ITBISTotal = ItbisTotal,
+                        InvoicedAmount = totalInvoiced,
+                        RNC = Operacion607.RNC,
+                        IsActive = Operacion607.IsActive,
+                        CreateDate = Operacion607.CreateDate,
+
+
+
+                    };
+
+                    result.Add(output);
+
+                }
+
+                response.Data = result;
+                response.Message = "Success";
+                response.StatusCode = 1;
+                response.Success = true;
+            }
+            catch (Exception ex)
+            {
+                response.Message = "Error al obtener las facturas.";
+                response.StatusCode = 0;
+                response.Success = false;
+
+            }
+            return Ok(response);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create607(Generar607Input data)
+        {
+            var response = new DefaultResponse();
+            var ListaDeFacturas = new List<Invoice606>();
+            if (_context.O606 == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                var Operacion607 = await _context.O607.Where(x => x.CompanyId == data.CompanyID && x.YearMonth == data.Anomes).FirstOrDefaultAsync();
+                var company = await _context.Company.FindAsync(data.CompanyID);
+
+                if (Operacion607 == null)
+                {
+                    Operacion607 = new O607();
+                    Operacion607.RNC = data.RNC;
+                    Operacion607.YearMonth = data.Anomes;
+                    Operacion607.CompanyId = data.CompanyID;
+                    Operacion607.Name = $@"607-{company.Name}-{Operacion607.YearMonth.Replace("/", "")}";
+                    Operacion607.CreateDate = DateTime.Now;
+                    Operacion607.UserCode = "root";
+                    Operacion607.IsActive = true;
+
+                    await _context.O607.AddAsync(Operacion607);
+                    await _context.SaveChangesAsync();
+
+                    response.Message = "607 creado con éxito!";
+                    response.StatusCode = 1;
+                    response.Success = true;
+                }
+                else
+                {
+                    if (Operacion607.IsActive)
+                    {
+                        response.Message = "Este 607 ya existe!";
+                        response.StatusCode = 0;
+                        response.Success = false;
+                    }
+                    else
+                    {
+                        Operacion607.IsActive = true;
+                        _context.O607.Update(Operacion607);
+                        await _context.SaveChangesAsync();
+                        response.Message = "6067 creado con éxito!";
+                        response.StatusCode = 1;
+                        response.Success = true;
+                    }
+
+
+                }
+            }
+            catch (Exception ex)
+            {
+                response.Message = "Error generar el 607.";
+                response.StatusCode = 0;
+                response.Success = false;
+
+            }
+            return Ok(response);
+        }
+
+        [HttpPost("descargar")]
+        public async Task<IActionResult> Descargar607(DescargarInput model)
+        {
+            var response = new DefaultResponse();
+            var ListaDeFacturas = new List<Invoice607>();
+            if (_context.O607 == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                var Operacion607 = await _context.O607.Where(x => x.Id == model.Id && x.IsActive).FirstOrDefaultAsync();
+
+
+                if (Operacion607 != null)
+                {
+                    var invoices = await _context.Invoice607.Where(x => x.O607Id == model.Id && x.IsActive).ToListAsync();
+                    if (invoices == null)
+                    {
+                        invoices = new List<Invoice607> { };
+                    }
+                    if (model.Formato == 23)
+                    {
+                        try
+                        {
+                            var document = _generador607.Generate607xlsx(invoices, Operacion607);
+                            response.Data = File(document, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", Operacion607.Name + ".xlsx");
+
+
+                        }
+                        catch (Exception r)
+                        {
+
+                            throw;
+                        }
+
+                    }
+                    else if (model.Formato == 19)
+                    {
+
+                        string archivo = _generador607.Generador607txt(invoices, Operacion607);
+                        response.Data = archivo;
+                    }
+
+                }
+                else
+                {
+                    response.Message = $"607 no encontrado id:{model.Id},formato:{model.Formato} ";
+                }
+
+
+                // response.Data = Operacion606;
+                response.Message = "607 descargado con éxito!";
+                response.StatusCode = 1;
+                response.Success = true;
+            }
+            catch (Exception ex)
+            {
+                response.Message = $"Error descargar el 607. {ex.Message}";
+                response.StatusCode = 0;
+                response.Success = false;
+
+            }
+            return Ok(response);
+        }
+
+
+
         public static void VerificarPropiedadesNulas<T>(T entidad)
         {
             var propiedades = typeof(T).GetProperties();

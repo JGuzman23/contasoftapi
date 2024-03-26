@@ -23,7 +23,7 @@ namespace contasoft_api.Controllers
             _generador608 = generador608;
         }
 
-        [HttpGet("608/{companyID}")]
+        [HttpGet("{companyID}")]
         public async Task<IActionResult> GetAll608ByCompany(int companyID)
         {
             var response = new DefaultResponse();
@@ -73,7 +73,7 @@ namespace contasoft_api.Controllers
             return Ok(response);
         }
 
-        [HttpPost("608")]
+        [HttpPost]
         public async Task<IActionResult> Create608(O608input data)
         {
             var response = new DefaultResponse();
@@ -223,7 +223,7 @@ namespace contasoft_api.Controllers
                 var invoice = await _context.Invoice607.FindAsync(input.InvoiceId);
                 if (invoice != null)
                 {
-                    invoice.Status = "Anulada";
+                   
                     invoice.IsActive = false;
                     _context.Invoice607.Update(invoice);
                     await _context.SaveChangesAsync();

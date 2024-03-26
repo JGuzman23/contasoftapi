@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("contasoft-api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d7e4f4039feceb1aeffaf378be778683a1603b1d")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+491039c917859526f4a5caad7b3d284f2fcf148a")]
 [assembly: System.Reflection.AssemblyProductAttribute("contasoft-api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("contasoft-api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

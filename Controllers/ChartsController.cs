@@ -46,7 +46,7 @@ namespace contasoft_api.Controllers
                     foreach (var maestro in Operacion607)
                     {
                         
-                        var facturas = await _context.Invoice607.Where(x => x.O607Id == maestro.Id && x.IsActive && x.Deleted == false).ToListAsync();
+                        var facturas = await _context.Invoice607.Where(x => x.O607Id == maestro.Id && x.IsActive).ToListAsync();
 
                         foreach (var montos in facturas)
                         {

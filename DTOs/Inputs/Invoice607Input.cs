@@ -26,7 +26,7 @@
         public decimal? BonosOCertificadosRegalo { get; set; }
         public decimal? Permuta { get; set; }
         public decimal? OtrasFormasVentas { get; set; }
-        public int CompanyID { get; set; }
+  
 
     }
 }

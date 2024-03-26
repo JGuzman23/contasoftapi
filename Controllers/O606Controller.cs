@@ -142,7 +142,115 @@ namespace contasoft_api.Controllers
             return Ok(response);
         }
 
-        [HttpGet("606/{companyID}")]
+        [HttpPut("invoice606/{id}")]
+        public async Task<IActionResult> UpdateInvoice606(int id, Invoice606Input input)
+        {
+            if (id != input.Id)
+            {
+                return BadRequest();
+            }
+            var response = new DefaultResponse();
+            var anomesFactura = DateTime.Parse(input.FechaComprobante).ToString("yyyy/MM");
+
+            if (_context.Invoice606 == null)
+            {
+                return NotFound();
+            }
+            try
+            {
+                var Operacion606 = await _context.O606.Where(x => x.CompanyId == input.CompanyID && x.YearMonth == anomesFactura).OrderBy(x => x.Id).FirstOrDefaultAsync();
+                var invoice = await _context.Invoice606.FindAsync(id);
+
+
+                try
+                {
+                    if (invoice != null)
+                    {
+                        invoice.RNCCedulaPasaporte = input.RNCCedulaPasaporte;
+                        invoice.TipoID = (int)input.TipoID;
+                        invoice.TipoBienesYServiciosComprados = (int)input.TipoBienesYServiciosComprados;
+                        invoice.NumeroComprobanteFiscal = input.NumeroComprobanteFiscal;
+                        invoice.NumeroComprobanteFiscalModificado = input.NumeroComprobanteFiscalModificado;
+                        invoice.FechaComprobante = input.FechaComprobante;
+                        invoice.FechaPago = input.FechaPago;
+                        invoice.MontoFacturadoEnServicio = input.MontoFacturadoEnServicio;
+                        invoice.MontoFacturadoEnBienes = input.MontoFacturadoEnBienes;
+                        invoice.TotalMontoFacturado = input.TotalMontoFacturado;
+                        invoice.ITBISFacturado = input.ITBISFacturado;
+                        invoice.ITBISRetenido = input.ITBISRetenido;
+                        invoice.ITBISSujetoaProporcionalidad = input.ITBISSujetoaProporcionalidad;
+                        invoice.ITBISLlevadoAlCosto = input.ITBISLlevadoAlCosto;
+                        invoice.ITBISPorAdelantar = input.ITBISPorAdelantar;
+                        invoice.ITBISPersividoEnCompras = input.ITBISPersividoEnCompras;
+                        invoice.TipoRetencionEnISR = input.TipoRetencionEnISR;
+                        invoice.MontoRetencionRenta = input.MontoRetencionRenta;
+                        invoice.IRSPercibidoEnCompras = input.IRSPercibidoEnCompras;
+                        invoice.ImpuestoSelectivoAlConsumo = input.ImpuestoSelectivoAlConsumo;
+                        invoice.OtrosImpuestosTasa = input.OtrosImpuestosTasa;
+                        invoice.MontoPropinaLegal = input.MontoPropinaLegal;
+                        invoice.FormaDePago = input.FormaDePago;
+                        invoice.O606Id = Operacion606.Id;
+                        invoice.UserCode = "root";
+                        invoice.UpdateDate = DateTime.Now;
+
+                        _context.Invoice606.Update(invoice);
+                        await _context.SaveChangesAsync();
+                    }
+
+
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+
+
+                response.Message = "Factura Actualizada con éxito";
+                response.StatusCode = 1;
+                response.Success = true;
+            }
+            catch (Exception ex)
+            {
+                response.Message = "Error al Actualizar esta factura.";
+                response.StatusCode = 0;
+                response.Success = false;
+
+            }
+            return Ok(response);
+        }
+
+        [HttpDelete("invoice606/{id}")]
+        public async Task<IActionResult> DeleteInvoice606(int id)
+        {
+            var response = new DefaultResponse();
+
+            try
+            {
+                var invoice = await _context.Invoice606.FindAsync(id);
+                invoice.Deleted = true;
+                invoice.UpdateDate = DateTime.Now;
+                _context.Invoice606.Update(invoice);
+                await _context.SaveChangesAsync();
+
+
+                response.Message = "Factura Eliminada con éxito";
+                response.StatusCode = 1;
+                response.Success = true;
+
+            }
+            catch (Exception)
+            {
+                response.Message = "Success";
+                response.StatusCode = 1;
+                response.Success = true;
+
+            }
+
+            return Ok(response);
+        }
+
+        [HttpGet("{companyID}")]
         public async Task<IActionResult> GetAll606ByCompany(int companyID)
         {
             var response = new DefaultResponse();
@@ -204,7 +312,7 @@ namespace contasoft_api.Controllers
             return Ok(response);
         }
 
-        [HttpPost("606")]
+        [HttpPost]
         public async Task<IActionResult> Create606(O606input data)
         {
             var response = new DefaultResponse();
@@ -339,113 +447,8 @@ namespace contasoft_api.Controllers
             return Ok(response);
         }
 
-        [HttpPut("invoice606/{id}")]
-        public async Task<IActionResult> UpdateInvoice606(int id, Invoice606Input input)
-        {
-            if (id != input.Id)
-            {
-                return BadRequest();
-            }
-            var response = new DefaultResponse();
-            var anomesFactura = DateTime.Parse(input.FechaComprobante).ToString("yyyy/MM");
-
-            if (_context.Invoice606 == null)
-            {
-                return NotFound();
-            }
-            try
-            {
-                var Operacion606 = await _context.O606.Where(x => x.CompanyId == input.CompanyID && x.YearMonth == anomesFactura).OrderBy(x => x.Id).FirstOrDefaultAsync();
-                var invoice = await _context.Invoice606.FindAsync(id);
-
-
-                try
-                {
-                    if (invoice != null)
-                    {
-                        invoice.RNCCedulaPasaporte = input.RNCCedulaPasaporte;
-                        invoice.TipoID = (int)input.TipoID;
-                        invoice.TipoBienesYServiciosComprados = (int)input.TipoBienesYServiciosComprados;
-                        invoice.NumeroComprobanteFiscal = input.NumeroComprobanteFiscal;
-                        invoice.NumeroComprobanteFiscalModificado = input.NumeroComprobanteFiscalModificado;
-                        invoice.FechaComprobante = input.FechaComprobante;
-                        invoice.FechaPago = input.FechaPago;
-                        invoice.MontoFacturadoEnServicio = input.MontoFacturadoEnServicio;
-                        invoice.MontoFacturadoEnBienes = input.MontoFacturadoEnBienes;
-                        invoice.TotalMontoFacturado = input.TotalMontoFacturado;
-                        invoice.ITBISFacturado = input.ITBISFacturado;
-                        invoice.ITBISRetenido = input.ITBISRetenido;
-                        invoice.ITBISSujetoaProporcionalidad = input.ITBISSujetoaProporcionalidad;
-                        invoice.ITBISLlevadoAlCosto = input.ITBISLlevadoAlCosto;
-                        invoice.ITBISPorAdelantar = input.ITBISPorAdelantar;
-                        invoice.ITBISPersividoEnCompras = input.ITBISPersividoEnCompras;
-                        invoice.TipoRetencionEnISR = input.TipoRetencionEnISR;
-                        invoice.MontoRetencionRenta = input.MontoRetencionRenta;
-                        invoice.IRSPercibidoEnCompras = input.IRSPercibidoEnCompras;
-                        invoice.ImpuestoSelectivoAlConsumo = input.ImpuestoSelectivoAlConsumo;
-                        invoice.OtrosImpuestosTasa = input.OtrosImpuestosTasa;
-                        invoice.MontoPropinaLegal = input.MontoPropinaLegal;
-                        invoice.FormaDePago = input.FormaDePago;
-                        invoice.O606Id = Operacion606.Id;
-                        invoice.UserCode = "root";
-                        invoice.UpdateDate = DateTime.Now;
-
-                        _context.Invoice606.Update(invoice);
-                        await _context.SaveChangesAsync();
-                    }
-
-
-                }
-                catch (Exception)
-                {
-
-                    throw;
-                }
-
-
-                response.Message = "Factura Actualizada con éxito";
-                response.StatusCode = 1;
-                response.Success = true;
-            }
-            catch (Exception ex)
-            {
-                response.Message = "Error al Actualizar esta factura.";
-                response.StatusCode = 0;
-                response.Success = false;
-
-            }
-            return Ok(response);
-        }
-
-        [HttpDelete("invoice606/{id}")]
-        public async Task<IActionResult> DeleteInvoice606(int id)
-        {
-            var response = new DefaultResponse();
-
-            try
-            {
-                var invoice = await _context.Invoice606.FindAsync(id);
-                invoice.Deleted = true;
-                invoice.UpdateDate = DateTime.Now;
-                _context.Invoice606.Update(invoice);
-                await _context.SaveChangesAsync();
-
-
-                response.Message = "Factura Eliminada con éxito";
-                response.StatusCode = 1;
-                response.Success = true;
-
-            }
-            catch (Exception)
-            {
-                response.Message = "Success";
-                response.StatusCode = 1;
-                response.Success = true;
-
-            }
-
-            return Ok(response);
-        }
+       
+      
     }
     public class DescargarInput
     {

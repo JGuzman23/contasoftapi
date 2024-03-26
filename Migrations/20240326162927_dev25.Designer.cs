@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using contasoft_api.Data;
 
@@ -11,9 +12,10 @@ using contasoft_api.Data;
 namespace contasoft_api.Migrations
 {
     [DbContext(typeof(ContaSoftDbContext))]
-    partial class ContaSoftDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240326162927_dev25")]
+    partial class dev25
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -501,9 +503,6 @@ namespace contasoft_api.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("Total")
-                        .HasColumnType("decimal(18,2)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("InvoiceIncomeId");
@@ -836,9 +835,6 @@ namespace contasoft_api.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("PlanId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("RolId")
                         .HasColumnType("int");
 
                     b.Property<int?>("RolesId")

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using contasoft_api.Data;
 
@@ -11,9 +12,10 @@ using contasoft_api.Data;
 namespace contasoft_api.Migrations
 {
     [DbContext(typeof(ContaSoftDbContext))]
-    partial class ContaSoftDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240326201651_dev28")]
+    partial class dev28
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

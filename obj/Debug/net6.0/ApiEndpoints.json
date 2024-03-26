@@ -185,9 +185,9 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "contasoft_api.Controllers.InvoiceController",
+    "ContainingType": "contasoft_api.Controllers.O606Controller",
     "Method": "Create606",
-    "RelativePath": "api/Invoice/606",
+    "RelativePath": "api/O606",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -201,9 +201,9 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "contasoft_api.Controllers.InvoiceController",
+    "ContainingType": "contasoft_api.Controllers.O606Controller",
     "Method": "GetAll606ByCompany",
-    "RelativePath": "api/Invoice/606/{companyID}",
+    "RelativePath": "api/O606/{companyID}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -217,9 +217,94 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "contasoft_api.Controllers.InvoiceController",
+    "ContainingType": "contasoft_api.Controllers.O606Controller",
+    "Method": "Descargar606",
+    "RelativePath": "api/O606/descargar/606",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "contasoft_api.Controllers.DescargarInput",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "contasoft_api.Controllers.O606Controller",
+    "Method": "CreateInvoice606",
+    "RelativePath": "api/O606/invoice606",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "input",
+        "Type": "contasoft_api.DTOs.Inputs.Invoice606Input",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "contasoft_api.Controllers.O606Controller",
+    "Method": "GetAllInvoice606ByCompany",
+    "RelativePath": "api/O606/invoice606/{companyID}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "companyID",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "contasoft_api.Controllers.O606Controller",
+    "Method": "UpdateInvoice606",
+    "RelativePath": "api/O606/invoice606/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "input",
+        "Type": "contasoft_api.DTOs.Inputs.Invoice606Input",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "contasoft_api.Controllers.O606Controller",
+    "Method": "DeleteInvoice606",
+    "RelativePath": "api/O606/invoice606/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "contasoft_api.Controllers.O607Controller",
     "Method": "Create607",
-    "RelativePath": "api/Invoice/607",
+    "RelativePath": "api/O607",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -233,9 +318,9 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "contasoft_api.Controllers.InvoiceController",
+    "ContainingType": "contasoft_api.Controllers.O607Controller",
     "Method": "GetAll607ByCompany",
-    "RelativePath": "api/Invoice/607/{companyID}",
+    "RelativePath": "api/O607/{companyID}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -249,9 +334,94 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "contasoft_api.Controllers.InvoiceController",
+    "ContainingType": "contasoft_api.Controllers.O607Controller",
+    "Method": "Descargar607",
+    "RelativePath": "api/O607/descargar",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "contasoft_api.Controllers.DescargarInput",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "contasoft_api.Controllers.O607Controller",
+    "Method": "CreateInvoice607",
+    "RelativePath": "api/O607/invoice607",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "input",
+        "Type": "contasoft_api.DTOs.Inputs.InvoiceIncomeInput",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "contasoft_api.Controllers.O607Controller",
+    "Method": "GetAllInvoice607ByCompany",
+    "RelativePath": "api/O607/invoice607/{companyID}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "companyID",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "contasoft_api.Controllers.O607Controller",
+    "Method": "UpdateInvoice607",
+    "RelativePath": "api/O607/invoice607/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "input",
+        "Type": "contasoft_api.DTOs.Inputs.Invoice607Input",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "contasoft_api.Controllers.O607Controller",
+    "Method": "DeleteInvoice607",
+    "RelativePath": "api/O607/invoice607/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "contasoft_api.Controllers.O608Controller",
     "Method": "Create608",
-    "RelativePath": "api/Invoice/608",
+    "RelativePath": "api/O608",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -265,9 +435,9 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "contasoft_api.Controllers.InvoiceController",
+    "ContainingType": "contasoft_api.Controllers.O608Controller",
     "Method": "GetAll608ByCompany",
-    "RelativePath": "api/Invoice/608/{companyID}",
+    "RelativePath": "api/O608/{companyID}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -281,9 +451,9 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "contasoft_api.Controllers.InvoiceController",
+    "ContainingType": "contasoft_api.Controllers.O608Controller",
     "Method": "VoidInvoice",
-    "RelativePath": "api/Invoice/anular",
+    "RelativePath": "api/O608/anular",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -297,41 +467,9 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "contasoft_api.Controllers.InvoiceController",
-    "Method": "Descargar606",
-    "RelativePath": "api/Invoice/descargar/606",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "model",
-        "Type": "contasoft_api.Controllers.DescargarInput",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "contasoft_api.Controllers.InvoiceController",
-    "Method": "Descargar607",
-    "RelativePath": "api/Invoice/descargar/607",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "model",
-        "Type": "contasoft_api.Controllers.DescargarInput",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "contasoft_api.Controllers.InvoiceController",
+    "ContainingType": "contasoft_api.Controllers.O608Controller",
     "Method": "Descargar608",
-    "RelativePath": "api/Invoice/descargar/608",
+    "RelativePath": "api/O608/descargar/608",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -339,144 +477,6 @@
       {
         "Name": "model",
         "Type": "contasoft_api.Controllers.DescargarInput",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "contasoft_api.Controllers.InvoiceController",
-    "Method": "CreateInvoice606",
-    "RelativePath": "api/Invoice/invoice606",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "input",
-        "Type": "contasoft_api.DTOs.Inputs.Invoice606Input",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "contasoft_api.Controllers.InvoiceController",
-    "Method": "GetAllInvoice606ByCompany",
-    "RelativePath": "api/Invoice/invoice606/{companyID}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "companyID",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "contasoft_api.Controllers.InvoiceController",
-    "Method": "UpdateInvoice606",
-    "RelativePath": "api/Invoice/invoice606/{id}",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      },
-      {
-        "Name": "input",
-        "Type": "contasoft_api.DTOs.Inputs.Invoice606Input",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "contasoft_api.Controllers.InvoiceController",
-    "Method": "DeleteInvoice606",
-    "RelativePath": "api/Invoice/invoice606/{id}",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "contasoft_api.Controllers.InvoiceController",
-    "Method": "CreateInvoice607",
-    "RelativePath": "api/Invoice/invoice607",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "input",
-        "Type": "contasoft_api.DTOs.Inputs.Invoice607Input",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "contasoft_api.Controllers.InvoiceController",
-    "Method": "GetAllInvoice607ByCompany",
-    "RelativePath": "api/Invoice/invoice607/{companyID}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "companyID",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "contasoft_api.Controllers.InvoiceController",
-    "Method": "UpdateInvoice607",
-    "RelativePath": "api/Invoice/invoice607/{id}",
-    "HttpMethod": "PUT",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      },
-      {
-        "Name": "input",
-        "Type": "contasoft_api.DTOs.Inputs.Invoice607Input",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "contasoft_api.Controllers.InvoiceController",
-    "Method": "DeleteInvoice607",
-    "RelativePath": "api/Invoice/invoice607/{id}",
-    "HttpMethod": "DELETE",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
         "IsRequired": true
       }
     ],

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using contasoft_api.Data;
 
@@ -11,9 +12,10 @@ using contasoft_api.Data;
 namespace contasoft_api.Migrations
 {
     [DbContext(typeof(ContaSoftDbContext))]
-    partial class ContaSoftDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240326195224_dev27")]
+    partial class dev27
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -443,6 +445,10 @@ namespace contasoft_api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("CompanyRNC")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
@@ -838,12 +844,6 @@ namespace contasoft_api.Migrations
                     b.Property<int?>("PlanId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("RolId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("RolesId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2");
 
@@ -857,8 +857,6 @@ namespace contasoft_api.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("PlanId");
-
-                    b.HasIndex("RolesId");
 
                     b.ToTable("User");
                 });
@@ -1086,13 +1084,7 @@ namespace contasoft_api.Migrations
                         .WithMany()
                         .HasForeignKey("PlanId");
 
-                    b.HasOne("contasoft_api.Models.Roles", "Roles")
-                        .WithMany()
-                        .HasForeignKey("RolesId");
-
                     b.Navigation("Plan");
-
-                    b.Navigation("Roles");
                 });
 
             modelBuilder.Entity("contasoft_api.Models.UserCompany", b =>
