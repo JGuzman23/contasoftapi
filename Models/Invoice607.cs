@@ -28,7 +28,7 @@
         public decimal? OtrasFormasVentas { get; set; }
         public int? O607Id { get; set; }
         public bool Deleted { get; set; }
-
+        public string? Status { get; set; }
         public virtual O607 O607 { get; set; }
     }
 }

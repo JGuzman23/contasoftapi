@@ -132,7 +132,7 @@ namespace contasoft_api.Controllers
                 Email = model.Email,
                 Cellphone = model.Cellphone,
                 Username = model.Username,
-                RolId = model.RoleId,
+                RolesId = model.RoleId,
                 PlanId = model.PlanId,
                 CreateDate = DateTime.Now,
                 UserCode = "Root",

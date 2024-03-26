@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Text;
 
 namespace contasoft_api.Controllers
 {
@@ -79,7 +78,7 @@ namespace contasoft_api.Controllers
                 Id = company.Id,
                 Telefono = company.Telefono,
                 Address = company.Address,
-                //Photo = Encoding.UTF8.GetString(company.Photo),
+                Photo = company.Photo,
                 IsActive = company.IsActive,
             };
 
@@ -110,7 +109,7 @@ namespace contasoft_api.Controllers
                     RNC = model.RNC,
                     Address = model.Address,
                     Telefono = model.Telefono,
-                    Photo = Encoding.UTF8.GetBytes(model.Photo),
+                    Photo = model.Photo,
                     CreateDate = DateTime.Now,
                     UserCode = "root",
                     IsActive = true
@@ -183,7 +182,7 @@ namespace contasoft_api.Controllers
                 company.RNC = model.RNC;
                 company.Address = model.Address;
                 company.Telefono = model.Telefono;
-                company.Photo = Encoding.UTF8.GetBytes(model.Photo); 
+                company.Photo = model.Photo;
                 company.IsActive = model.IsActive;
 
                 _contaSoftDbContext.Company.Update(company);

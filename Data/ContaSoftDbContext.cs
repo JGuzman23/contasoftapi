@@ -27,6 +27,8 @@ namespace contasoft_api.Data
         public DbSet<Roles> Roles { get; set; }
         public DbSet<Permissions> Permissions { get; set; }
         public DbSet<RolesPermission> RolesPermission { get; set; }
+        public DbSet<InvoiceIncome> InvoiceIncome { get; set; }
+        public DbSet<InvoiceProduct> InvoiceProduct { get; set; }
 
 
 

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using contasoft_api.Data;
 
@@ -11,9 +12,10 @@ using contasoft_api.Data;
 namespace contasoft_api.Migrations
 {
     [DbContext(typeof(ContaSoftDbContext))]
-    partial class ContaSoftDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240325152259_dev23")]
+    partial class dev23
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -433,68 +435,6 @@ namespace contasoft_api.Migrations
                     b.ToTable("Invoice607");
                 });
 
-            modelBuilder.Entity("contasoft_api.Models.InvoiceIncome", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("CompanyAddress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CompanyName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Invoice607Id")
-                        .HasColumnType("int");
-
-                    b.Property<string>("InvoiceNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Note")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Invoice607Id");
-
-                    b.ToTable("InvoiceIncome");
-                });
-
-            modelBuilder.Entity("contasoft_api.Models.InvoiceProduct", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("InvoiceIncomeId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("InvoiceIncomeId");
-
-                    b.ToTable("InvoiceProduct");
-                });
-
             modelBuilder.Entity("contasoft_api.Models.O606", b =>
                 {
                     b.Property<int>("Id")
@@ -822,6 +762,9 @@ namespace contasoft_api.Migrations
                     b.Property<int?>("PlanId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("RolId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("RolesId")
                         .HasColumnType("int");
 
@@ -919,8 +862,6 @@ namespace contasoft_api.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("O608Id");
-
                     b.ToTable("VoidInvoice");
                 });
 
@@ -978,24 +919,6 @@ namespace contasoft_api.Migrations
                         .HasForeignKey("O607Id");
 
                     b.Navigation("O607");
-                });
-
-            modelBuilder.Entity("contasoft_api.Models.InvoiceIncome", b =>
-                {
-                    b.HasOne("contasoft_api.Models.Invoice607", "Invoice607")
-                        .WithMany()
-                        .HasForeignKey("Invoice607Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Invoice607");
-                });
-
-            modelBuilder.Entity("contasoft_api.Models.InvoiceProduct", b =>
-                {
-                    b.HasOne("contasoft_api.Models.InvoiceIncome", null)
-                        .WithMany("Products")
-                        .HasForeignKey("InvoiceIncomeId");
                 });
 
             modelBuilder.Entity("contasoft_api.Models.O606", b =>
@@ -1093,22 +1016,6 @@ namespace contasoft_api.Migrations
                     b.Navigation("Company");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("contasoft_api.Models.VoidInvoice", b =>
-                {
-                    b.HasOne("contasoft_api.Models.O608", "O608")
-                        .WithMany()
-                        .HasForeignKey("O608Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("O608");
-                });
-
-            modelBuilder.Entity("contasoft_api.Models.InvoiceIncome", b =>
-                {
-                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

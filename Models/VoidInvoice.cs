@@ -8,5 +8,6 @@
         public string Comment { get; set; }
         public int CompanyId { get; set; }
         public int O608Id { get; set; }
+        public virtual O608 O608 { get; set; }
     }
 }

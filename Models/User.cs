@@ -9,9 +9,10 @@
         public string? Cellphone { get; set; }
         public string? Password { get; set; }
         public string? Username { get; set;}
-        public int? RolId { get; set; }
+        public int? RolesId { get; set; }
         public int? PlanId { get; set; }
         public virtual Plan? Plan { get; set; }
+        public virtual Roles? Roles { get; set; }
 
     }
 
